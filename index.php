@@ -81,8 +81,8 @@ $discount = database::getDiscount() * 100;
             <div class="form-group col-xs-6">
               <select class="form-control select select-primary" data-toggle="select" name="size" id="sizeSelect" onchange="processCrust(this);">
                 <option value="1">Large</option>
-                <option value="2">Medium (-£2.00)</option>
-                <option value="3">Small (-£4.00)</option>
+                <option value="2">Medium (-£<?=number_format((float)200/$discount, 2, '.', '')?>)</option>
+                <option value="3">Small (-£<?=number_format((float)400/$discount, 2, '.', '')?>)</option>
               </select>
             </div>
             
@@ -91,9 +91,9 @@ $discount = database::getDiscount() * 100;
                 <option value="a">Normal Crust</option>
                 <option value="b">Italian Crust</option>
                 <option value="c">Thin and Crispy Crust</option>
-                <option value="d">Stuffed Crust (+£2.50)</option>
-                <option value="e">Hotdog Stuffed Crust (+£2.50)</option>
-                <option value="f">BBQ Stuffed Crust (+£2.50)</option>
+                <option value="d">Stuffed Crust (+£<?=number_format((float)250/$discount, 2, '.', '')?>)</option>
+                <option value="e">Hotdog Stuffed Crust (+£<?=number_format((float)250/$discount, 2, '.', '')?>)</option>
+                <option value="f">BBQ Stuffed Crust (+£<?=number_format((float)250/$discount, 2, '.', '')?>)</option>
               </select>
             </div>
           
