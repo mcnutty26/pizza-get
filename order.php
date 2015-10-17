@@ -244,7 +244,7 @@ if (isset($_POST['name'])) {
           <? } else if ($token != "duplicate"){ ?>
           <p>All done! When you're ready, go and pay for your pizza.</p>
           <? } else {?>
-          <p>Looks like you've submitted a duplicate order. Please <a href="index.php">try again</a>.</p>
+          <p>Looks like there was a problem with your order! Please <a href="index.php">try again</a>.</p>
           <? } ?>
       </div>
       
