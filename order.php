@@ -2,6 +2,12 @@
 require_once 'database.php';
 require_once 'dist/php/stripe-php-3.4.0/init.php';
 $config = include('config.php');
+$isLive = database::getLive();
+if ($isLive == 1) {
+  $deployment_name = "_live";
+} else {
+  $deployment_name = "_test";
+}
 
 if (!(isset($_POST['name']) or isset($_POST['token']))) {
   header( 'Location: index.php' ) ;
@@ -86,7 +92,7 @@ if (isset($_POST['name'])) {
     if ($token != "duplicate") {
       $declined = false;
       
-      \Stripe\Stripe::setApiKey($config['api_private']);
+      \Stripe\Stripe::setApiKey($config["api_private$deployment_name"]);
       try {
       $charge = \Stripe\Charge::create(array(
         "amount" => $price,
@@ -251,7 +257,7 @@ if (isset($_POST['name'])) {
     <script>
     function init() {
       var handler = StripeCheckout.configure({
-        key: '<?=$config['api_public']?>',
+        key: '<?=$config["api_public$deployment_name"]?>',
         image: 'img/logo.png',
         locale: 'auto',
         token: function(token) {

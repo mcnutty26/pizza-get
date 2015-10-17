@@ -25,6 +25,13 @@ if ($_SESSION['login'] == 1) {
       database::clearGuid();
     }
   }
+  if (isset($_POST['deployment'])) {
+    if ($_POST['deployment'] == '1') {
+      database::setLive(1);
+    } else {
+      database::setLive(0);
+    }
+  }
   
   if (isset($_POST['mark'])) {
     database::setPaid(database::escape($_POST['mark']));
@@ -42,6 +49,9 @@ if ($_SESSION['login'] == 1) {
   $active = database::getActive();
   $active_name = ($active == 0 ? "ON" : "OFF");
   $active_bit = ($active == 0 ? "1" : "0");
+  $deployment = database::getLive();
+  $deployment_name = ($deployment == 0 ? "LIVE" : "TEST");
+  $deployment_bit = ($deployment == 0 ? "1" : "0");
   
 }
 ?>
@@ -98,7 +108,7 @@ if ($_SESSION['login'] == 1) {
       <div class="login-form">
         <? if ($_SESSION['login'] == 1) { ?>
         
-        <div class="form-group col-xs-6">
+        <div class="form-group col-xs-4">
           <form method="post" action="missioncontrol.php" id="disFrm">
             <select class="form-control select select-primary" data-toggle="select" name="discount" onchange="processDiscount()">
               <option value="2" <? if ($discount == 2) {echo "selected";} ?>>50% Discount</option>
@@ -108,10 +118,17 @@ if ($_SESSION['login'] == 1) {
           </form>
         </div>
         
-        <div class="form-group col-xs-6">
+        <div class="form-group col-xs-4">
           <form method="post" action="missioncontrol.php" id="actFrm">
             <input type="hidden" name="active" value="<?=$active_bit?>">
             <a href="#" class="btn btn-block btn-lg btn-primary" onclick="processActive()">Turn ordering <?= $active_name?></a>
+          </form>
+        </div>
+        
+        <div class="form-group col-xs-4">
+          <form method="post" action="missioncontrol.php" id="dplyFrm">
+            <input type="hidden" name="deployment" value="<?=$deployment_bit?>">
+            <a href="#" class="btn btn-block btn-lg btn-primary" onclick="processDeploy()">Set mode to <?= $deployment_name?></a>
           </form>
         </div>
         
@@ -162,6 +179,9 @@ if ($_SESSION['login'] == 1) {
           }
           function processActive() {
             document.getElementById("actFrm").submit();
+          }
+          function processDeploy() {
+            document.getElementById("dplyFrm").submit();
           }
           function processTable(arg) {
             arg.parentNode.submit();

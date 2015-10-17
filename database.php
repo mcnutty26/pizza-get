@@ -48,6 +48,18 @@ class database {
         return $row['active'];
       }
       return 0;
+    }
+    
+    static function getLive()
+    {
+      $query = "SELECT live
+                FROM hir2_events
+                LIMIT 1";
+      $result = database::query($query);
+      while ($row = mysqli_fetch_array($result)) {
+        return $row['live'];
+      }
+      return 0;
     }  
     
     static function getDiscount()
@@ -90,6 +102,12 @@ class database {
     static function setActive($val)
     {
       $query = "UPDATE `mcnutty`.`hir2_events` SET `active`=$val;";
+      database::query($query);
+    }
+    
+    static function setLive($val)
+    {
+      $query = "UPDATE `mcnutty`.`hir2_events` SET `live`=$val;";
       database::query($query);
     }
    
