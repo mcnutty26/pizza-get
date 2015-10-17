@@ -112,7 +112,9 @@ if ($_SESSION['login'] == 1) {
           <form method="post" action="missioncontrol.php" id="disFrm">
             <select class="form-control select select-primary" data-toggle="select" name="discount" onchange="processDiscount()">
               <option value="2" <? if ($discount == 2) {echo "selected";} ?>>50% Discount</option>
-              <option value="1.5" <? if ($discount == 1.5) {echo "selected";} ?>>33% Discount</option>
+              <option value="1.67" <? if ($discount == 1.67) {echo "selected";} ?>>40% Discount</option>
+              <option value="1.50" <? if ($discount == 1.50) {echo "selected";} ?>>33% Discount</option>
+              <option value="1.43" <? if ($discount == 1.43) {echo "selected";} ?>>30% Discount</option>
               <option value="1" <? if ($discount == 1) {echo "selected";} ?>>0% Discount</option>
             </select>
           </form>
