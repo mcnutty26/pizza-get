@@ -19,8 +19,11 @@ if (isset($_POST['name'])) {
   $pizza_name = database::getPizza($pizza);
   $size = database::escape($_POST['size']);
   $menu = database::getMenu();
-  $size_name = "Nothing";
-  $price = 0;
+  $error = false;
+  
+  if ($pizza_name == false) {
+    $error = true;
+  }
 
   if ($size == "1") {
     $size_name = "Large";
@@ -43,14 +46,15 @@ if (isset($_POST['name'])) {
       $price = $row['small'];
       }
     }
+  } else {
+    $error = true;
   }
   
   $crust = database::escape($_POST['crust']);
   if ($crust == "d" or $crust == "e" or $crust == "f") {
     $price += 250;
   }
-  
-  $crust_name = "Nothing";
+
   if ($crust == "a") {
     $crust_name = "Normal Crust";
   } else if ($crust == "b") {
@@ -63,6 +67,8 @@ if (isset($_POST['name'])) {
     $crust_name = "Hotdog Stuffed Crust";
   } else if ($crust == "f") {
     $crust_name = "BBQ Stuffed Crust";
+  } else {
+    $error = true;
   }
   
   $discount = database::getDiscount();
@@ -73,48 +79,46 @@ if (isset($_POST['name'])) {
     $comments = "(" . $comments . ")";
   }
   
+  $order = "A $size_name $pizza_name with a $crust_name $comments";
   $guid = uniqid();
-  database::setGuid($guid, $price, $price_stripe);
+  
+  if ($error == false) {
+    database::setGuid($guid, $name, $order, $price, $price_stripe);
+  }
     
 } else {
   $token = database::escape($_POST['token']);
-  $name = database::escape($_POST['user']);
-  $order = substr(database::escape($_POST['order']), 0, 200);
-  $guid = database::escape($_POST['guid']);
+  $guid = database::getGuid(database::escape($_POST['guid']));
+  $name = $guid['name'];
+  $order = $guid['order'];
+  
+  if ($guid == false) {
+    $token = "duplicate";
+  }
     
-  if ($token != "cash") {
+  if ($token != "cash" and $token != "duplicate") {
+    $price = $guid['price_stripe'];
     $email = database::escape($_POST['email']);
-    $price = database::getGuid($guid, 1);
-    if ($price == false) {
-      $token = "duplicate";
-    }
+    $declined = false;
     
-    if ($token != "duplicate") {
-      $declined = false;
-      
-      \Stripe\Stripe::setApiKey($config["api_private$deployment_name"]);
-      try {
-      $charge = \Stripe\Charge::create(array(
-        "amount" => $price,
-        "currency" => "gbp",
-        "source" => $token,
-        "description" => "$order")
-      );
-      database::setOrder($name, $order, $price, 1);
-      mail($email, "Pizza Order", "Your order for $order was successful! You have been charged £" . $price/100 . ".");
-      } catch(\Stripe\Error\Card $e) {
-        $declined = true;
-      } catch(\Stripe\Error\InvalidRequest $e) {
-        $declined = true;
-      }
+    \Stripe\Stripe::setApiKey($config["api_private$deployment_name"]);
+    try {
+    $charge = \Stripe\Charge::create(array(
+      "amount" => $price,
+      "currency" => "gbp",
+      "source" => $token,
+      "description" => "$order")
+    );
+    database::setOrder($name, $order, $price, 1);
+    mail($email, "Pizza Order", "Your order for $order was successful! You have been charged £" . $price/100 . ".");
+    } catch(\Stripe\Error\Card $e) {
+      $declined = true;
+    } catch(\Stripe\Error\InvalidRequest $e) {
+      $declined = true;
     }
-  } else {
-    $price = database::getGuid($guid, 0);
-    if ($price == false) {
-      $token = "duplicate";
-    } else {
-      database::setOrder($name, $order, $price, 0);
-    }
+  } else if ($token == "cash") {
+    $price = $guid['price'];
+    database::setOrder($name, $order, $price, 0);
   }
 }
 ?>

@@ -84,7 +84,7 @@ class database {
       while ($row = mysqli_fetch_array($result)) {
         return $row['pizza'];
       }
-      return "Nothing";
+      return false;
     }
     
     static function setOrder($name, $order, $price, $paid)
@@ -111,13 +111,13 @@ class database {
       database::query($query);
     }
    
-    static function setGuid($guid, $price, $price_stripe)
+    static function setGuid($guid, $name, $order, $price, $price_stripe)
     {
-      $query = "INSERT INTO  `mcnutty`.`hir2_sessions` (`id` ,`guid` ,`price`, `price_stripe`) VALUES (NULL ,  '$guid',  $price, $price_stripe);";
+      $query = "INSERT INTO  `mcnutty`.`hir2_sessions` (`id` ,`guid`, `name`, `order` ,`price`, `price_stripe`) VALUES (NULL ,  '$guid', '$name', '$order', $price, $price_stripe);";
       database::query($query);
     }
 	
-	static function getGuid($guid, $stripe)
+	static function getGuid($guid)
     {
       $query = "SELECT * FROM `mcnutty`.`hir2_sessions` WHERE `guid`='$guid' LIMIT 1";
       $result = database::query($query);
@@ -126,11 +126,12 @@ class database {
       }
       while ($row = mysqli_fetch_array($result)) {
         database::deleteGuid($guid);
-        if ($stripe) {
-          return $row['price_stripe']; 
-        } else {
-          return $row['price'];
-        }
+        return array(
+          'name'          => $row['name'],
+          'order'         => $row['order'],
+          'price'         => $row['price'],
+          'price_stripe'  => $row['price_stripe']
+        );
       }
       return false;
     }
