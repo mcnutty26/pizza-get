@@ -71,6 +71,7 @@ if ($_SESSION['login'] == $config['cp_guid']) {
     <!-- Loading Flat UI -->
     <link href="dist/css/flat-ui.css" rel="stylesheet">
     <link href="docs/assets/css/demo.css" rel="stylesheet">
+    <link href="dist/css/pizza-get.css" rel="stylesheet">
 
     <link rel="shortcut icon" href="img/favicon.ico">
 
@@ -137,7 +138,7 @@ if ($_SESSION['login'] == $config['cp_guid']) {
         <h4>Active Orders:</h4>
 
         <div class="form-group">
-          <table style="width:100%;" border="1" id="orders">
+          <table id="orders">
             <tr>
               <td>Name</td>
               <td>Order</td>
@@ -146,9 +147,19 @@ if ($_SESSION['login'] == $config['cp_guid']) {
               <td>Delete</td>
             </tr>
             <? $result = database::getOrders();
+            $subtotal = 0;
+            $total = 0;
             foreach ($result as $row) {
               $row_price = $row['price'];
               $row_id = $row['id'];
+              
+              if (($subtotal + $row_price) > 25000) {
+                  echo '<tr><td></td><td>Over £250 web order limit - split here</td><td>' . number_format((float)($subtotal/100), 2, '.', '') . '</td><td></td><td></td>';
+                  $subtotal = 0;
+              }
+              $subtotal += $row_price;
+              $total += $row_price;
+              
               echo '<tr>';
               echo '<td>' . substr($row['name'], 0, 15) . '</td>';
               echo '<td>' . $row['order'] . '</td>';
@@ -158,6 +169,7 @@ if ($_SESSION['login'] == $config['cp_guid']) {
               echo '</tr>';
             }
             ?>
+            <tr><td></td><td>TOTAL</td><td><?=number_format((float)($total/100), 2, '.', '')?></td><td></td><td></td></tr>
           </table>
         </div>
         <div class="row">  

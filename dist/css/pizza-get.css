@@ -7,3 +7,16 @@ footer p {
   text-align: center;
   color: black
 }
+
+#orders {
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  width:100%;
+  border: 1px solid black;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+#orders td {
+  border: 1px solid black;
+}
