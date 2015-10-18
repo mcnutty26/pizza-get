@@ -208,8 +208,6 @@ if (isset($_POST['name'])) {
           <div class="form-group col-xs-4">
             <form method="post" action="order.php">
               <input type="hidden" name="token" value="cash">
-              <input type="hidden" name="user" value="<?=$name?>">
-              <input type="hidden" name="order" value="<?="A $size_name $pizza_name with a $crust_name $comments"?>">
               <input type="hidden" name="guid" value="<?=$guid?>">
               <input class="btn btn-primary btn-lg btn-block" type="submit" value="Pay by cash £<?=number_format((float)$price/100, 2, '.', '')?>">
             </form>
@@ -275,24 +273,6 @@ if (isset($_POST['name'])) {
           fTok.attr("name", "token");
           fTok.attr("value", token.id);
           form.append(fTok);
-          
-          var fEmail = $('<input></input>');
-          fEmail.attr("type", "hidden");
-          fEmail.attr("name", "email");
-          fEmail.attr("value", token.email);
-          form.append(fEmail);
-          
-          var fName = $('<input></input>');
-          fName.attr("type", "hidden");
-          fName.attr("name", "user");
-          fName.attr("value", "<?=$name?>");
-          form.append(fName);
-          
-          var fOrder = $('<input></input>');
-          fOrder.attr("type", "hidden");
-          fOrder.attr("name", "order");
-          fOrder.attr("value", "<?="A $size_name $pizza_name with a $crust_name $comments"?>");
-          form.append(fOrder);
           
           var fPrice = $('<input></input>');
           fPrice.attr("type", "hidden");
