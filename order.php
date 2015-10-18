@@ -220,6 +220,60 @@ if (isset($_POST['name'])) {
       <p>Please check your order before continuing. Card payments are slightly higher to cover the fee we have to pay.</p>
       <p>Transactions are handled over https by <a href="https://stripe.com/gb" target="_blank">Stripe</a>, meaning that none of your card details ever touch our servers.</p>
       
+      <script src="https://checkout.stripe.com/checkout.js"></script>
+      <script>
+      function init() {
+        var handler = StripeCheckout.configure({
+          key: '<?=$config["api_public$deployment_name"]?>',
+          image: 'img/logo.png',
+          locale: 'auto',
+          token: function(token) {
+            
+            var form = $('<form></form>');
+            form.attr("method", "post");
+            form.attr("action", "order.php");
+            
+            var fEmail = $('<input></input>');
+            fEmail.attr("type", "hidden");
+            fEmail.attr("name", "email");
+            fEmail.attr("value", token.email);
+            form.append(fEmail);
+
+            var fTok = $('<input></input>');
+            fTok.attr("type", "hidden");
+            fTok.attr("name", "token");
+            fTok.attr("value", token.id);
+            form.append(fTok);
+            
+            var fPrice = $('<input></input>');
+            fPrice.attr("type", "hidden");
+            fPrice.attr("name", "guid");
+            fPrice.attr("value", "<?=$guid?>");
+            form.append(fPrice);
+
+            $(document.body).append(form);
+            form.submit();
+          }
+        });
+
+        $('#customButton').on('click', function(e) {
+          // Open Checkout with further options
+          handler.open({
+            name: 'UWCS Pizza',
+            description: '<?="A $size_name $pizza_name"?>',
+            zipCode: true,
+            currency: "gbp",
+            amount: <?=$price_stripe?>,
+          });
+          e.preventDefault();
+        });
+
+        // Close Checkout on page navigation
+        $(window).on('popstate', function() {
+          handler.close();
+        });
+      }
+      </script>
       <? } else { ?>
         
         <div class="form-group">
@@ -245,7 +299,9 @@ if (isset($_POST['name'])) {
           <p>Looks like there was a problem with your order! Please <a href="index.php">try again</a>.</p>
           <? } ?>
       </div>
-      
+      <script>
+        function init() {}
+      </script>
       <? } ?>
       </div>
     </div> <!-- /container -->
@@ -255,54 +311,6 @@ if (isset($_POST['name'])) {
     <script src="dist/js/flat-ui.min.js"></script>
     <script src="docs/assets/js/application.js"></script>
     <script src="js/jquery-1.11.3.min.js"></script>
-    <script src="https://checkout.stripe.com/checkout.js"></script>
-    <script>
-    function init() {
-      var handler = StripeCheckout.configure({
-        key: '<?=$config["api_public$deployment_name"]?>',
-        image: 'img/logo.png',
-        locale: 'auto',
-        token: function(token) {
-          
-          var form = $('<form></form>');
-          form.attr("method", "post");
-          form.attr("action", "order.php");
-
-          var fTok = $('<input></input>');
-          fTok.attr("type", "hidden");
-          fTok.attr("name", "token");
-          fTok.attr("value", token.id);
-          form.append(fTok);
-          
-          var fPrice = $('<input></input>');
-          fPrice.attr("type", "hidden");
-          fPrice.attr("name", "guid");
-          fPrice.attr("value", "<?=$guid?>");
-          form.append(fPrice);
-
-          $(document.body).append(form);
-          form.submit();
-        }
-      });
-
-      $('#customButton').on('click', function(e) {
-        // Open Checkout with further options
-        handler.open({
-          name: 'UWCS Pizza',
-          description: '<?="A $size_name $pizza_name"?>',
-          zipCode: true,
-          currency: "gbp",
-          amount: <?=$price_stripe?>,
-        });
-        e.preventDefault();
-      });
-
-      // Close Checkout on page navigation
-      $(window).on('popstate', function() {
-        handler.close();
-      });
-    }
-    </script>
     <script>
       videojs.options.flash.swf = "dist/js/vendors/video-js.swf"
     </script>

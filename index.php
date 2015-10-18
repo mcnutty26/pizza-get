@@ -52,7 +52,7 @@ $discount = database::getDiscount() * 100;
       </div> <!-- /row -->
       
       <div class="demo-type-example">
-	    <h3>At gaming? Want pizza? We've got you covered.</h3>
+        <h3>At gaming? Want pizza? We've got you covered.</h3>
       </div>
       <? if ($active == 1) { ?>
       <div class="login-form">
