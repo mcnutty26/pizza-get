@@ -32,7 +32,7 @@ $isLive = database::getLive()
     <![endif]-->
   </head>
   <body>
-  <? if ($isLive == 0) { ?>
+  <? if ($isLive == 0 and $active == 1) { ?>
   <footer>
     <div class="container">
       <p>TEST MODE</p>
@@ -121,7 +121,7 @@ $isLive = database::getLive()
       <? } ?>
     </div> <!-- /container -->
     
-    <? if ($isLive == 0) { ?>
+    <? if ($isLive == 0 and $active == 1) { ?>
     <footer>
       <div class="container">
         <p>TEST MODE</p>

@@ -3,13 +3,15 @@ require_once 'database.php';
 require_once 'dist/php/stripe-php-3.4.0/init.php';
 $config = include('config.php');
 $isLive = database::getLive();
+$active = database::getActive();
+
 if ($isLive == 1) {
   $deployment_name = "_live";
 } else {
   $deployment_name = "_test";
 }
 
-if (!(isset($_POST['name']) or isset($_POST['token']))) {
+if (!(isset($_POST['name']) or isset($_POST['token'])) or $active == false) {
   header( 'Location: index.php' ) ;
 }
 
