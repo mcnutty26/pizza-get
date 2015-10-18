@@ -15,7 +15,10 @@ if ($_POST['pw'] == $config['cp_pass']) {
 
 if ($_SESSION['login'] == $config['cp_guid']) {
   if (isset($_POST['discount'])) {
-    database::setDiscount($_POST['discount']);
+    $sides_bit = (substr($_POST['discount'], 0, 1) == 'S' ? 1 : 0);
+    $discount = substr($_POST['discount'], 1);
+    database::setDiscount($discount);
+    database::setDiscountSides($sides_bit);
   }
   if (isset($_POST['active'])) {
     if ($_POST['active'] == '1') {
@@ -46,6 +49,7 @@ if ($_SESSION['login'] == $config['cp_guid']) {
   }
   
   $discount = database::getDiscount();
+  $discount_sides = database::getDiscountSides();
   $active = database::getActive();
   $active_name = ($active == 0 ? "ON" : "OFF");
   $active_bit = ($active == 0 ? "1" : "0");
@@ -112,11 +116,15 @@ if ($_SESSION['login'] == $config['cp_guid']) {
         <div class="form-group col-xs-4">
           <form method="post" action="missioncontrol.php" id="disFrm">
             <select class="form-control select select-primary" data-toggle="select" name="discount" onchange="processDiscount()">
-              <option value="2" <? if ($discount == 2) {echo "selected";} ?>>50% Discount</option>
-              <option value="1.67" <? if ($discount == 1.67) {echo "selected";} ?>>40% Discount</option>
-              <option value="1.50" <? if ($discount == 1.50) {echo "selected";} ?>>33% Discount</option>
-              <option value="1.43" <? if ($discount == 1.43) {echo "selected";} ?>>30% Discount</option>
-              <option value="1" <? if ($discount == 1) {echo "selected";} ?>>0% Discount</option>
+              <option value="P2" <? if ($discount == 2 and $discount_sides == 0) {echo "selected";} ?>>50% Discount (pizza only)</option>
+              <option value="S2" <? if ($discount == 2  and $discount_sides == 1) {echo "selected";} ?>>50% Discount</option>
+              <option value="P1.67" <? if ($discount == 1.67  and $discount_sides == 0) {echo "selected";} ?>>40% Discount (pizza only)</option>
+              <option value="S1.67" <? if ($discount == 1.67  and $discount_sides == 1) {echo "selected";} ?>>40% Discount</option>
+              <option value="P1.50" <? if ($discount == 1.50  and $discount_sides == 0) {echo "selected";} ?>>33% Discount (pizza only)</option>
+              <option value="S1.50" <? if ($discount == 1.50  and $discount_sides == 1) {echo "selected";} ?>>33% Discount</option>
+              <option value="P1.43" <? if ($discount == 1.43  and $discount_sides == 0) {echo "selected";} ?>>30% Discount (pizza only)</option>
+              <option value="S1.43" <? if ($discount == 1.43  and $discount_sides == 1) {echo "selected";} ?>>30% Discount</option>
+              <option value="S1" <? if ($discount == 1) {echo "selected";} ?>>0% Discount</option>
             </select>
           </form>
         </div>

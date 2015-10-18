@@ -39,6 +39,11 @@ class database {
       return database::simpleQuery("SELECT * FROM hir2_pizza");
     }
     
+    static function getSides()
+    {
+      return database::simpleQuery("SELECT * FROM hir2_sides");
+    }
+    
     static function getActive()
     {     
       return database::simpleQuery("SELECT active FROM hir2_events LIMIT 1")[0]['active'];
@@ -52,6 +57,11 @@ class database {
     static function getDiscount()
     {
       return database::simpleQuery("SELECT discount FROM hir2_events LIMIT 1")[0]['discount'];
+    }
+    
+    static function getDiscountSides()
+    {
+      return database::simpleQuery("SELECT discountSides FROM hir2_events LIMIT 1")[0]['discountSides'];
     }
     
     static function getOrders()
@@ -82,6 +92,11 @@ class database {
     static function setDiscount($val)
     {
       return database::singleArgQuery("UPDATE `mcnutty`.`hir2_events` SET `discount`=:arg;", $val);
+    }
+    
+    static function setDiscountSides($val)
+    {
+      return database::singleArgQuery("UPDATE `mcnutty`.`hir2_events` SET `discountSides`=:arg;", $val);
     }
     
     static function setActive($val)

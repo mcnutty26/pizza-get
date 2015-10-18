@@ -74,14 +74,28 @@ if (isset($_POST['name'])) {
   }
   
   $discount = database::getDiscount();
-  $price = $price/$discount;
+  $discount_sides = database::getDiscountSides();
+  
+  $result = database::getSides();
+  foreach ($result as $row) {
+    if (isset($_POST['side' . $row['id']])) {
+      if ($sides == "") {
+        $sides = " with " . $row['name'];
+      } else {
+        $sides = $sides . ', ' . $row['name'];
+      }
+      $price_sides += $row['price']/($discount_sides == 1 ? $discount : 1);
+    }
+  }
+  
+  $price = ($price/$discount) + $price_sides;
   $price_stripe = number_format((float)($price * 1.019) + 20, 0, '.', '');
   $comments = $_POST['comments'];
   if ($comments != "") {
-    $comments = "(" . $comments . ")";
+    $comments = " (" . $comments . ")";
   }
   
-  $order = "A $size_name $pizza_name with a $crust_name $comments";
+  $order = "A $size_name $crust_name $pizza_name$sides$comments";
   $guid = uniqid();
   
   if ($error == false) {
@@ -192,7 +206,7 @@ if (isset($_POST['name'])) {
             <p>Name: <?=$name?></p>
           </div>
           <div class="form-group col-xs-6">
-            <p>Pizza: <?=$pizza_name?></p>
+            <p>Order: <?="$pizza_name$sides"?></p>
           </div><!-- /btn-group -->
         </div>
         

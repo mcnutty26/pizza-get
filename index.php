@@ -3,6 +3,7 @@ require_once 'database.php';
 
 $active = database::getActive();
 $discount = database::getDiscount() * 100;
+$discount_sides = database::getDiscountSides();
 $isLive = database::getLive()
 ?>
 
@@ -31,7 +32,7 @@ $isLive = database::getLive()
       <script src="dist/js/vendor/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body>
+  <body onload="init()">
   <? if ($isLive == 0 and $active == 1) { ?>
   <footer>
     <div class="container">
@@ -87,7 +88,7 @@ $isLive = database::getLive()
           </div>
           <div class="row">
           
-            <div class="form-group col-xs-6">
+            <div class="form-group col-xs-4">
               <select class="form-control select select-primary" data-toggle="select" name="size" id="sizeSelect" onchange="processCrust(this);">
                 <option value="1">Large</option>
                 <option value="2">Medium (-£<?=number_format((float)200/$discount, 2, '.', '')?>)</option>
@@ -95,7 +96,7 @@ $isLive = database::getLive()
               </select>
             </div>
             
-            <div class="form-group col-xs-6">
+            <div class="form-group col-xs-4">
               <select class="form-control select select-primary" data-toggle="select" name="crust" id="crustSelect">
                 <option value="a">Normal Crust</option>
                 <option value="b">Italian Crust</option>
@@ -105,11 +106,40 @@ $isLive = database::getLive()
                 <option value="f">BBQ Stuffed Crust (+£<?=number_format((float)250/$discount, 2, '.', '')?>)</option>
               </select>
             </div>
+            
+            <div class="form-group col-xs-4">
+              <a class="btn btn-primary btn-lg btn-block" href="#" onclick="processSides()" id="showSides">Show sides</a>
+            </div>
           
           </div> <!-- /row -->
           
+          <div class="form-group" id="sides">
+            <? $result = database::getSides();
+            $count = 0;
+            $total = 0;
+            foreach ($result as $row) {
+              if ($count == 0) {
+                echo "<div class=\"row\">";
+              }
+              echo "<div class=\"form-group col-xs-3\">";
+              echo "<label class=\"checkbox\" for=\"side" . $row['id'] . "\">";
+              echo "<input type=\"checkbox\" id=\"side" . $row['id'] . "\" name=\"side" . $row['id'] . "\" data-toggle=\"checkbox\"/>" . $row['name'] . " (£" . number_format((float)$row['price']/( $discount_sides == 1 ? $discount : 100), 2, '.', '') . ")</label>";
+              echo "</div>";
+              if ($count == 3) {
+                echo "</div>";
+                $count = -1;
+              }
+              $count++;
+              $total++;
+            } 
+            if ($total % 4 != 0) {
+              echo "</div>";
+            }
+            ?>
+          </div>
+          
           <div class="form-group">
-            <input type="text" class="form-control" placeholder="Enter comments (like your two free topping changes)" id="comments" name="comments"" />
+            <input type="text" class="form-control" placeholder="Enter comments (like your two free topping changes)" id="comments" name="comments" />
             <label class="login-field-icon fui-chat" for="comments"></label>
           </div>
 
@@ -181,6 +211,20 @@ $isLive = database::getLive()
     
     function resetName() {
       $("#nameField").removeClass("has-error");
+    }
+    
+    function init() {
+      $('#sides').hide();
+    }
+    
+    function processSides() {
+      if ($('#sides').is(":visible")) {
+        document.getElementById('showSides').innerHTML = "Show sides";
+        $('#sides').hide('fast');
+      } else {
+        document.getElementById('showSides').innerHTML = "Hide sides";
+        $('#sides').show('fast');
+      }
     }
     </script>
     
