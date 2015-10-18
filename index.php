@@ -69,7 +69,7 @@ $discount = database::getDiscount() * 100;
                 <select class="form-control select select-primary" data-toggle="select" name="pizza">
 
                   <? $result = database::getMenu();
-                  while ($row = mysqli_fetch_array($result)) {
+                  foreach ($result as $row) {
                     echo '<option value="' . $row['id'] . '" >' . $row['pizza'] . ' (£' . number_format((float)$row['large']/$discount, 2, '.', '') . ')</option>';
                   } ?>
                 </select>

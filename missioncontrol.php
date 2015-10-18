@@ -10,12 +10,12 @@ if ($_POST['login'] == 2) {
 }
 
 if ($_POST['pw'] == $config['cp_pass']) {
-    $_SESSION['login'] = 1;
+    $_SESSION['login'] = $config['cp_guid'];
   }
 
-if ($_SESSION['login'] == 1) {
+if ($_SESSION['login'] == $config['cp_guid']) {
   if (isset($_POST['discount'])) {
-    database::setDiscount(database::escape($_POST['discount']));
+    database::setDiscount($_POST['discount']);
   }
   if (isset($_POST['active'])) {
     if ($_POST['active'] == '1') {
@@ -34,11 +34,11 @@ if ($_SESSION['login'] == 1) {
   }
   
   if (isset($_POST['mark'])) {
-    database::setPaid(database::escape($_POST['mark']));
+    database::setPaid($_POST['mark']);
   }
   
   if (isset($_POST['del'])) {
-    database::deleteOrder(database::escape($_POST['del']));
+    database::deleteOrder($_POST['del']);
   }
   
   if ($_POST['clear'] == 1) {
@@ -106,7 +106,7 @@ if ($_SESSION['login'] == 1) {
 	    <h3>pizza-get Mission Control</h3>
       </div>
       <div class="login-form">
-        <? if ($_SESSION['login'] == 1) { ?>
+        <? if ($_SESSION['login'] == $config['cp_guid']) { ?>
         
         <div class="form-group col-xs-4">
           <form method="post" action="missioncontrol.php" id="disFrm">
@@ -146,7 +146,7 @@ if ($_SESSION['login'] == 1) {
               <td>Delete</td>
             </tr>
             <? $result = database::getOrders();
-            while ($row = mysqli_fetch_array($result)) {
+            foreach ($result as $row) {
               $row_price = $row['price'];
               $row_id = $row['id'];
               echo '<tr>';

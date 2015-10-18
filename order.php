@@ -14,10 +14,10 @@ if (!(isset($_POST['name']) or isset($_POST['token']))) {
 }
 
 if (isset($_POST['name'])) {
-  $name = substr(database::escape($_POST['name']), 0, 50);
-  $pizza = database::escape($_POST['pizza']);
+  $name = substr($_POST['name'], 0, 50);
+  $pizza = $_POST['pizza'];
   $pizza_name = database::getPizza($pizza);
-  $size = database::escape($_POST['size']);
+  $size = $_POST['size'];
   $menu = database::getMenu();
   $error = false;
   
@@ -27,21 +27,21 @@ if (isset($_POST['name'])) {
 
   if ($size == "1") {
     $size_name = "Large";
-    while ($row = mysqli_fetch_array($menu)) {
+    foreach ($menu as $row) {
       if ($row['id'] == $pizza) {
         $price = $row['large'];
       }
     }
   } else if ($size == "2") {
     $size_name = "Medium";
-    while ($row = mysqli_fetch_array($menu)) {
+    foreach ($menu as $row) {
       if ($row['id'] == $pizza) {
         $price = $row['medium'];
       }
     }
   } else if ($size == "3") {
     $size_name = "Small";
-    while ($row = mysqli_fetch_array($menu)) {
+    foreach ($menu as $row) {
       if ($row['id'] == $pizza) {
       $price = $row['small'];
       }
@@ -50,7 +50,7 @@ if (isset($_POST['name'])) {
     $error = true;
   }
   
-  $crust = database::escape($_POST['crust']);
+  $crust = $_POST['crust'];
   if ($crust == "d" or $crust == "e" or $crust == "f") {
     $price += 250;
   }
@@ -74,7 +74,7 @@ if (isset($_POST['name'])) {
   $discount = database::getDiscount();
   $price = $price/$discount;
   $price_stripe = number_format((float)($price * 1.019) + 20, 0, '.', '');
-  $comments = database::escape($_POST['comments']);
+  $comments = $_POST['comments'];
   if ($comments != "") {
     $comments = "(" . $comments . ")";
   }
@@ -87,18 +87,18 @@ if (isset($_POST['name'])) {
   }
     
 } else {
-  $token = database::escape($_POST['token']);
-  $guid = database::getGuid(database::escape($_POST['guid']));
+  $token = $_POST['token'];
+  $guid = database::getGuid($_POST['guid']);
+  database::deleteGuid($_POST['guid']);
   $name = $guid['name'];
   $order = $guid['order'];
-  
-  if ($guid == false) {
+  if (empty($guid)) {
     $token = "duplicate";
   }
     
   if ($token != "cash" and $token != "duplicate") {
     $price = $guid['price_stripe'];
-    $email = database::escape($_POST['email']);
+    $email = $_POST['email'];
     $declined = false;
     
     \Stripe\Stripe::setApiKey($config["api_private$deployment_name"]);
@@ -292,11 +292,11 @@ if (isset($_POST['name'])) {
           <? if (!$declined and ($token != "cash") and ($token != "duplicate")) { ?>
           <p>Payment completed successfully! A confirmation email has been sent to <?=$email?></p>
           <? } else if (($token != "cash") and ($token != "duplicate")) { ?>
-          <p>Your payment was declined. Please <a href="index.php">try again</a> or use cash.</p>
+          <p>Your payment was declined. You may have submitted the form twice - check to see if you have a confirmation email. Alternatively <a href="index.php">try again</a> or use cash.</p>
           <? } else if ($token != "duplicate"){ ?>
           <p>All done! When you're ready, go and pay for your pizza.</p>
           <? } else {?>
-          <p>Looks like there was a problem with your order! Please <a href="index.php">try again</a>.</p>
+          <p>Looks like there was a problem with your order! You may have submitted the form twice. If not, please <a href="index.php">try again</a>.</p>
           <? } ?>
       </div>
       <script>
