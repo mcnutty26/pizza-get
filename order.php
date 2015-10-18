@@ -139,6 +139,7 @@ if (isset($_POST['name'])) {
     <!-- Loading Flat UI -->
     <link href="dist/css/flat-ui.css" rel="stylesheet">
     <link href="docs/assets/css/demo.css" rel="stylesheet">
+    <link href="dist/css/pizza-get.css" rel="stylesheet">
 
     <link rel="shortcut icon" href="img/favicon.ico">
     
@@ -149,6 +150,13 @@ if (isset($_POST['name'])) {
     <![endif]-->
   </head>
   <body onload="init()">
+  <? if ($isLive == 0) { ?>
+  <footer>
+    <div class="container">
+      <p>TEST MODE</p>
+    </div>
+  </footer>
+  <? } ?>
     <div class="container">
       <div class="row demo-row">
         <div class="col-xs-12">
@@ -305,7 +313,14 @@ if (isset($_POST['name'])) {
       <? } ?>
       </div>
     </div> <!-- /container -->
-
+    <? if ($isLive == 0) { ?>
+    <footer>
+      <div class="container">
+        <p>TEST MODE</p>
+      </div>
+    </footer>
+    <? } ?>
+    
     <script src="dist/js/vendor/jquery.min.js"></script>
     <script src="dist/js/vendor/video.js"></script>
     <script src="dist/js/flat-ui.min.js"></script>
