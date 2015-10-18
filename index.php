@@ -116,7 +116,6 @@ $discount = database::getDiscount() * 100;
     <script src="dist/js/vendor/video.js"></script>
     <script src="dist/js/flat-ui.min.js"></script>
     <script src="docs/assets/js/application.js"></script>
-    <script src="js/jquery-1.11.3.min.js"></script>
 
     <script>
     function processCrust(arg) {
