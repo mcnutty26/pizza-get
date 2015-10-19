@@ -81,6 +81,11 @@ class database {
     
     static function getPizza($id)
     {
+      return database::singleArgQuery("SELECT * FROM hir2_pizza WHERE id = :arg LIMIT 1", $id)[0];
+    }
+    
+    static function getPizzaName($id)
+    {
       return database::singleArgQuery("SELECT pizza FROM hir2_pizza WHERE id = :arg LIMIT 1", $id)[0]['pizza'];
     }
     

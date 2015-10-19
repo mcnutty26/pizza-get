@@ -76,12 +76,13 @@ $isLive = database::getLive()
             </div>
             <div class="col-xs-6">
               <div class="form-group">
-                <select class="form-control select select-primary" data-toggle="select" name="pizza">
+                <select class="form-control select select-primary" data-toggle="select" name="pizza" onchange="processPizza(this)">
 
                   <? $result = database::getMenu();
                   foreach ($result as $row) {
                     echo '<option value="' . $row['id'] . '" >' . $row['pizza'] . ' (£' . number_format((float)$row['large']/$discount, 2, '.', '') . ')</option>';
                   } ?>
+                  <option value="H">Half and Half</option>
                 </select>
               </div>
             </div>
@@ -108,7 +109,7 @@ $isLive = database::getLive()
             </div>
             
             <div class="form-group col-xs-4">
-              <a class="btn btn-primary btn-lg btn-block" href="#" onclick="processSides()" id="showSides">Show sides</a>
+              <a class="btn btn-primary btn-lg btn-block" href="#" onclick="processSides()" id="showSides">Show Sides</a>
             </div>
           
           </div> <!-- /row -->
@@ -143,7 +144,7 @@ $isLive = database::getLive()
             <label class="login-field-icon fui-chat" for="comments"></label>
           </div>
 
-          <a class="btn btn-primary btn-lg btn-block" href="#" onclick="validateCrust()">Go to payment</a>
+          <a class="btn btn-primary btn-lg btn-block" id="submitForm" href="#" onclick="validateCrust()">Go to Payment</a>
         </form>
       </div>
       <? } else { ?>
@@ -224,6 +225,19 @@ $isLive = database::getLive()
       } else {
         document.getElementById('showSides').innerHTML = "Hide sides";
         $('#sides').show('fast');
+      }
+    }
+    
+    function processPizza(arg) {
+      if (arg.value == "H") {
+        $('#orderForm').attr('action', 'custom.php?mode=H');
+        $('#submitForm').html('Customise your pizza');
+      } else if (arg.value == "B") {
+        $('#orderForm').attr('action', 'custom.php?mode=B');
+        $('#submitForm').html('Customise your pizza');
+      } else {
+        $('#orderForm').attr('action', 'order.php');
+        $('#submitForm').html('Go to Payment');
       }
     }
     </script>

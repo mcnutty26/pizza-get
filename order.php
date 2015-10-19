@@ -16,11 +16,27 @@ if (!(isset($_POST['name']) or isset($_POST['token'])) or $active == false) {
 }
 
 if (isset($_POST['name'])) {
-  $name = substr($_POST['name'], 0, 50);
-  $pizza = $_POST['pizza'];
-  $pizza_name = database::getPizza($pizza);
-  $size = $_POST['size'];
+  
   $menu = database::getMenu();
+  
+  $half = false;
+  if ($_POST['pizza'] == "H") {
+    $pizzaA = database::getPizza($_POST['pizzaA']);
+    $pizzaB = database::getPizza($_POST['pizzaB']);
+    if ($pizzaA['large'] > $pizzaB['large']) {
+      $pizza = $_POST['pizzaA'];
+    } else {
+      $pizza = $_POST['pizzaB'];
+    }
+    $half = true;
+    $pizza_name = database::getPizzaName($_POST['pizzaA']) . '/' . database::getPizzaName($_POST['pizzaB']);
+  } else {
+    $pizza = $_POST['pizza'];
+    $pizza_name = database::getPizzaName($pizza);
+  }
+  
+  $name = substr($_POST['name'], 0, 50);
+  $size = $_POST['size'];
   $error = false;
   
   if ($pizza_name == false) {
