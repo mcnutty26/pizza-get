@@ -44,6 +44,11 @@ class database {
       return database::simpleQuery("SELECT * FROM hir2_sides");
     }
     
+    static function getToppings()
+    {
+      return database::simpleQuery("SELECT * FROM hir2_toppings");
+    }
+    
     static function getActive()
     {     
       return database::simpleQuery("SELECT active FROM hir2_events LIMIT 1")[0]['active'];

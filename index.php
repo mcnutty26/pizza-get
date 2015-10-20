@@ -54,7 +54,7 @@ $isLive = database::getLive()
               <ul class="nav navbar-nav navbar-left">
                 <li><a href="index.php">Order</a></li>
                 <li><a href="about.html">About</a></li>
-                <li><a href="https://www.dominos.co.uk/store" target="_blank">Dominoes Menu</a></li>
+                <li><a href="https://www.dominos.co.uk/store" target="_blank">Dominos Menu</a></li>
                </ul>
             </div><!-- /.navbar-collapse -->
           </nav><!-- /navbar -->
@@ -83,6 +83,7 @@ $isLive = database::getLive()
                     echo '<option value="' . $row['id'] . '" >' . $row['pizza'] . ' (£' . number_format((float)$row['large']/$discount, 2, '.', '') . ')</option>';
                   } ?>
                   <option value="H">Half and Half</option>
+                  <option value="B">Build your Own</option>
                 </select>
               </div>
             </div>
