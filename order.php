@@ -18,8 +18,10 @@ if (!(isset($_POST['name']) or isset($_POST['token'])) or $active == false) {
 if (isset($_POST['name'])) {
   
   $menu = database::getMenu();
+  $toppings = database::getToppings();
+  $discount = database::getDiscount();
+  $discount_sides = database::getDiscountSides();
   
-  $half = false;
   if ($_POST['pizza'] == "H") {
     $pizzaA = database::getPizza($_POST['pizzaA']);
     $pizzaB = database::getPizza($_POST['pizzaB']);
@@ -28,11 +30,12 @@ if (isset($_POST['name'])) {
     } else {
       $pizza = $_POST['pizzaB'];
     }
-    $half = true;
     $pizza_name = database::getPizzaName($_POST['pizzaA']) . '/' . database::getPizzaName($_POST['pizzaB']);
-  } else {
+  } else if ($_POST['pizza']!= "B") {
     $pizza = $_POST['pizza'];
     $pizza_name = database::getPizzaName($pizza);
+  } else {
+    $pizza_name = "Build Your Own";
   }
   
   $name = substr($_POST['name'], 0, 50);
@@ -48,12 +51,16 @@ if (isset($_POST['name'])) {
     foreach ($menu as $row) {
       if ($row['id'] == $pizza) {
         $price = $row['large'];
+      } else if ($row['id'] == 1 and $_POST['pizza'] == "B") {
+        $price = $row['large'];
       }
     }
   } else if ($size == "2") {
     $size_name = "Medium";
     foreach ($menu as $row) {
       if ($row['id'] == $pizza) {
+        $price = $row['medium'];
+      } else if ($row['id'] == 1 and $_POST['pizza'] == "B") {
         $price = $row['medium'];
       }
     }
@@ -62,10 +69,36 @@ if (isset($_POST['name'])) {
     foreach ($menu as $row) {
       if ($row['id'] == $pizza) {
       $price = $row['small'];
+      } else if ($row['id'] == 1 and $_POST['pizza'] == "B") {
+        $price = $row['small'];
       }
     }
   } else {
     $error = true;
+  }
+  
+  if ($_POST['pizza'] == "B") {
+    $topping_count = 0;
+    foreach ($toppings as $row) {
+      if (isset($_POST['topping' . $row['id']])) {
+        if ($topping_count == 0) {
+          $pizza_name = $pizza_name . ": " . $row['name'];
+        } else {
+          $pizza_name = $pizza_name . ', ' . $row['name'];
+        }
+        if ($topping_count > 1) {
+          $price += 130/$discount;
+        }
+        $topping_count++;
+      }
+    }
+    echo $_POST['sauce'];
+    if ($_POST['sauce'] != "on") {
+      $pizza_name = $pizza_name . ", no sauce";
+    }
+    if ($_POST['cheese'] != "on") {
+      $pizza_name = $pizza_name . ", no cheese";
+    }
   }
   
   $crust = $_POST['crust'];
@@ -88,9 +121,6 @@ if (isset($_POST['name'])) {
   } else {
     $error = true;
   }
-  
-  $discount = database::getDiscount();
-  $discount_sides = database::getDiscountSides();
   
   $result = database::getSides();
   foreach ($result as $row) {

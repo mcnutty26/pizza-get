@@ -61,7 +61,6 @@ if ($size == "1") {
         <input type="hidden" name="size" value="<?=$_POST['size']?>">
         <input type="hidden" name="crust" value="<?=$_POST['crust']?>">
         <input type="hidden" name="comments" value="<?=$_POST['comments']?>">
-        <input type="hidden" name="pizza" value="H">
         <?$result = database::getSides();
         foreach ($result as $row) {
           if (isset($_POST['side' . $row['id']])) {
@@ -90,6 +89,7 @@ if ($size == "1") {
         
         <div class="login-form">
           <div id="hnh">
+              <input type="hidden" name="pizza" value="H">
               <div class="row">
                 <div class="col-xs-6">
                   Left Half
@@ -124,17 +124,18 @@ if ($size == "1") {
             </form>
           </div>
           <div id="byo">
+            <input type="hidden" name="pizza" value="B">
             Pizza Base (£<?=number_format((float)$price/$discount, 2, '.', '')?>):
             <div class="form-group row">
               <div class="col-xs-3">
                 <label class="checkbox" for="sauce">
-                  <input type="checkbox" id="sauce" checked="checked" data-toggle="checkbox"/>
+                  <input type="checkbox" id="sauce" name="sauce" checked="checked" data-toggle="checkbox"/>
                   Tomato Sauce
                 </label>
               </div>
               <div class="col-xs-3">
                 <label class="checkbox" for="cheese">
-                  <input type="checkbox" id="cheese" checked="checked" data-toggle="checkbox"/>
+                  <input type="checkbox" id="cheese" name="cheese" checked="checked" data-toggle="checkbox"/>
                 Mozzarella Cheese
                 </label>
               </div>
@@ -150,7 +151,7 @@ if ($size == "1") {
                 }
                 echo "<div class=\"form-group col-xs-3\">";
                 echo "<label class=\"checkbox\" for=\"topping" . $row['id'] . "\">";
-                echo "<input type=\"checkbox\" name=\"topping" . $row['id'] . "\" data-toggle=\"checkbox\"/>" . $row['name'] . " (£" . number_format((float)130/$discount, 2, '.', '') . ")</label>";
+                echo "<input type=\"checkbox\" id=\"topping" . $row['id'] . "\" name=\"topping" . $row['id'] . "\" data-toggle=\"checkbox\">" . $row['name'] . " (£" . number_format((float)130/$discount, 2, '.', '') . ")</label>";
                 echo "</div>";
                 if ($count == 3) {
                   echo "</div>";

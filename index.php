@@ -125,7 +125,7 @@ $isLive = database::getLive()
               }
               echo "<div class=\"form-group col-xs-3\">";
               echo "<label class=\"checkbox\" for=\"side" . $row['id'] . "\">";
-              echo "<input type=\"checkbox\" id=\"side" . $row['id'] . "\" name=\"side" . $row['id'] . "\" data-toggle=\"checkbox\"/>" . $row['name'] . " (£" . number_format((float)$row['price']/( $discount_sides == 1 ? $discount : 100), 2, '.', '') . ")</label>";
+              echo "<input type=\"checkbox\" id=\"side" . $row['id'] . "\" name=\"side" . $row['id'] . "\" data-toggle=\"checkbox\">" . $row['name'] . " (£" . number_format((float)$row['price']/( $discount_sides == 1 ? $discount : 100), 2, '.', '') . ")</label>";
               echo "</div>";
               if ($count == 3) {
                 echo "</div>";
@@ -232,10 +232,10 @@ $isLive = database::getLive()
     function processPizza(arg) {
       if (arg.value == "H") {
         $('#orderForm').attr('action', 'custom.php?mode=H');
-        $('#submitForm').html('Customise your pizza');
+        $('#submitForm').html('Customise Your Pizza');
       } else if (arg.value == "B") {
         $('#orderForm').attr('action', 'custom.php?mode=B');
-        $('#submitForm').html('Customise your pizza');
+        $('#submitForm').html('Customise Your Pizza');
       } else {
         $('#orderForm').attr('action', 'order.php');
         $('#submitForm').html('Go to Payment');
