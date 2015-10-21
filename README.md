@@ -14,7 +14,6 @@ v2 features (pending):
 * Added support for ordering sides
 * Changed database.php interactions to use prepared statements
 * Tidied up the conrol panel with a running total and breaks every £250 (web order limit)
-
-Planned features:
 * Support for half and half pizzas
 * Support for choose your own pizzas
+
