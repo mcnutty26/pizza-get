@@ -79,25 +79,53 @@ if (isset($_POST['name'])) {
   
   if ($_POST['pizza'] == "B") {
     $topping_count = 0;
+    
+    if ($_POST['sauce'] == "on") {
+      if ($topping_count == 0) {
+        $pizza_name = $pizza_name . " - " . "Tomato Sauce";
+      } else {
+        $pizza_name = $pizza_name . ', ' . "Tomato Sauce";
+      }
+      if ($topping_count > 1) {
+          $price += 130/$discount;
+        }
+        $topping_count++;
+    } else if ($_POST['bsauce'] == "on") {
+      if ($topping_count == 0) {
+        $pizza_name = $pizza_name . " - " . "BBQ Sauce";
+      } else {
+        $pizza_name = $pizza_name . ', ' . "BBQ Sauce";
+      }
+      if ($topping_count > 1) {
+          $price += 130/$discount;
+        }
+        $topping_count++;
+    } else {
+      if ($topping_count == 0) {
+        $pizza_name = $pizza_name . " - " . "No Sauce";
+      } else {
+        $pizza_name = $pizza_name . ', ' . "No Sauce";
+      }
+    }
+    if ($_POST['cheese'] != "on") {
+        $pizza_name = $pizza_name . ', ' . "No Cheese";
+    } else {
+      $pizza_name = $pizza_name . ', ' . "Mozarella Cheese";
+      if ($topping_count > 1) {
+        $price += 130/$discount;
+      }
+      $topping_count++;
+    }
+      
+    
     foreach ($toppings as $row) {
       if (isset($_POST['topping' . $row['id']])) {
-        if ($topping_count == 0) {
-          $pizza_name = $pizza_name . ": " . $row['name'];
-        } else {
-          $pizza_name = $pizza_name . ', ' . $row['name'];
-        }
+        $pizza_name = $pizza_name . ', ' . $row['name'];
         if ($topping_count > 1) {
           $price += 130/$discount;
         }
         $topping_count++;
       }
-    }
-    echo $_POST['sauce'];
-    if ($_POST['sauce'] != "on") {
-      $pizza_name = $pizza_name . ", no sauce";
-    }
-    if ($_POST['cheese'] != "on") {
-      $pizza_name = $pizza_name . ", no cheese";
     }
   }
   

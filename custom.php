@@ -129,8 +129,14 @@ if ($size == "1") {
             <div class="form-group row">
               <div class="col-xs-3">
                 <label class="checkbox" for="sauce">
-                  <input type="checkbox" id="sauce" name="sauce" checked="checked" data-toggle="checkbox"/>
+                  <input type="checkbox" id="sauce" name="sauce" onchange="processSauce(0)" checked="checked" data-toggle="checkbox"/>
                   Tomato Sauce
+                </label>
+              </div>
+              <div class="col-xs-3">
+                <label class="checkbox" for="bsauce">
+                  <input type="checkbox" id="bsauce" name="bsauce" onchange="processSauce(1)" data-toggle="checkbox"/>
+                  BBQ Sauce
                 </label>
               </div>
               <div class="col-xs-3">
@@ -205,6 +211,16 @@ if ($size == "1") {
       $('#byo').hide();
     } else {
       $('#hnh').hide();  
+    }
+  }
+  
+  function processSauce(arg) {
+    if ($("#sauce").prop("checked") && $("#bsauce").prop("checked")) {
+      if (arg == 0) {
+        $("#bsauce").prop("checked", false);
+      } else {
+        $("#sauce").prop("checked", false);
+      }
     }
   }
   </script>
