@@ -2,6 +2,8 @@
 require_once 'database.php'; 
 
 $active = database::getActive();
+
+//Redirect the user if the navigated here accidentally
 if ($active != 1 or !isset($_POST['pizza']) or !isset($_POST['crust']) or !isset($_POST['size']) or !isset($_POST['name'])) {
   header( 'Location: index.php' ) ;
 }
@@ -9,6 +11,7 @@ if ($active != 1 or !isset($_POST['pizza']) or !isset($_POST['crust']) or !isset
 $discount = database::getDiscount() * 100;
 $isLive = database::getLive();
 
+//Load and correctly display the base price of the pizza
 $size = $_POST['size'];
 $base = database::getPizza(1);
 if ($size == "1") {
@@ -18,6 +21,7 @@ if ($size == "1") {
 } else if ($size == "3") {
   $price = $base['small'];
 } else {
+  //Redirect on impossible pizza size
   header( 'Location: index.php' );
 }
 ?>

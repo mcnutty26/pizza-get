@@ -7,6 +7,7 @@ define ('DBNAME', $config['dbname']);
 
 class database {
     
+    //Open a connection to the database usng PDO
     static function getDbh() {
       $dsn = 'mysql:dbname=' . DBNAME . ';host=' . HOST;
       try {
@@ -17,6 +18,7 @@ class database {
       }
     }
     
+    //Prepare and execute a generic query with no variables
     static function simpleQuery($query) {
       $stmt = database::getDbh()->prepare($query);
       if ($stmt->execute()) {
@@ -25,6 +27,7 @@ class database {
       return false;
     }
     
+    //Prepare and execute a generic query with a single variable
     static function singleArgQuery($query, $arg) {
       $stmt = database::getDbh()->prepare($query);
       $stmt->bindParam(':arg', $arg);

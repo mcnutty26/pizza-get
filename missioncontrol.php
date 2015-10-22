@@ -1,8 +1,10 @@
-<? 
-session_save_path('/home/mcnutty/pizza-get-sessions');
+<?
+$config = include('config.php');
+
+#Save sessions in a secure location to prevent session hijacking 
+session_save_path($config['session_path']);
 session_start();
 require_once 'database.php'; 
-$config = include('config.php');
 
 if ($_POST['login'] == 2) {
   session_destroy();
@@ -14,6 +16,8 @@ if ($_POST['pw'] == $config['cp_pass']) {
   }
 
 if ($_SESSION['login'] == $config['cp_guid']) {
+  
+  //These are set by the form controls
   if (isset($_POST['discount'])) {
     $sides_bit = (substr($_POST['discount'], 0, 1) == 'S' ? 1 : 0);
     $discount = substr($_POST['discount'], 1);

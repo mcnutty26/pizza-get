@@ -5,12 +5,14 @@ $config = include('config.php');
 $isLive = database::getLive();
 $active = database::getActive();
 
+//Determine which API key to use (live/test)
 if ($isLive == 1) {
   $deployment_name = "_live";
 } else {
   $deployment_name = "_test";
 }
 
+//Redirect the user if they navigated here accidentally or orders are closed
 if (!(isset($_POST['name']) or isset($_POST['token'])) or $active == false) {
   header( 'Location: index.php' ) ;
 }
@@ -22,30 +24,40 @@ if (isset($_POST['name'])) {
   $discount = database::getDiscount();
   $discount_sides = database::getDiscountSides();
   
+  //Process half and half
   if ($_POST['pizza'] == "H") {
     $pizzaA = database::getPizza($_POST['pizzaA']);
     $pizzaB = database::getPizza($_POST['pizzaB']);
+    
+    //Price is simply the full price of the most expensive of the two halves
     if ($pizzaA['large'] > $pizzaB['large']) {
       $pizza = $_POST['pizzaA'];
     } else {
       $pizza = $_POST['pizzaB'];
     }
+    
+    //Set the pizza name to something appropriate
     $pizza_name = database::getPizzaName($_POST['pizzaA']) . '/' . database::getPizzaName($_POST['pizzaB']);
   } else if ($_POST['pizza']!= "B") {
+    
+    //For normal pizzas we can just look up the name
     $pizza = $_POST['pizza'];
     $pizza_name = database::getPizzaName($pizza);
   } else {
     $pizza_name = "Build Your Own";
   }
   
+  //Truncate the name ready for database sotrage
   $name = substr($_POST['name'], 0, 50);
   $size = $_POST['size'];
   $error = false;
   
+  //If the user specified an invalid pizza, don't open a session for them
   if ($pizza_name == false) {
     $error = true;
   }
 
+  //Set the price based on the pizza size
   if ($size == "1") {
     $size_name = "Large";
     foreach ($menu as $row) {
@@ -77,9 +89,13 @@ if (isset($_POST['name'])) {
     $error = true;
   }
   
+  //Process build your own
   if ($_POST['pizza'] == "B") {
+    
+    //Toppings are charged after the first two (normally sauce and cheese)
     $topping_count = 0;
     
+    //We need to check for different sauce/cheese configurations so we can alert the person doing the order
     if ($_POST['sauce'] == "on") {
       if ($topping_count == 0) {
         $pizza_name = $pizza_name . " - " . "Tomato Sauce";
@@ -117,7 +133,7 @@ if (isset($_POST['name'])) {
       $topping_count++;
     }
       
-    
+    //Process toppings
     foreach ($toppings as $row) {
       if (isset($_POST['topping' . $row['id']])) {
         $pizza_name = $pizza_name . ', ' . $row['name'];
@@ -129,11 +145,13 @@ if (isset($_POST['name'])) {
     }
   }
   
+  //Charge for the crust if appropriate
   $crust = $_POST['crust'];
   if ($crust == "d" or $crust == "e" or $crust == "f") {
     $price += 250;
   }
 
+  //Determine the name of the chosen crust
   if ($crust == "a") {
     $crust_name = "Normal Crust";
   } else if ($crust == "b") {
@@ -150,6 +168,7 @@ if (isset($_POST['name'])) {
     $error = true;
   }
   
+  //Charge for sides and add the names to a string
   $result = database::getSides();
   foreach ($result as $row) {
     if (isset($_POST['side' . $row['id']])) {
@@ -162,6 +181,8 @@ if (isset($_POST['name'])) {
     }
   }
   
+  //Final price calculations and discount application
+  //Note that discount is applied seperately to side orders
   $price = ($price/$discount) + $price_sides;
   $price_stripe = number_format((float)($price * 1.019) + 20, 0, '.', '');
   $comments = $_POST['comments'];
@@ -169,16 +190,22 @@ if (isset($_POST['name'])) {
     $comments = " (" . $comments . ")";
   }
   
+  //Compile the order into a string and generate a guid to represent the session
   $order = "A $size_name $crust_name $pizza_name$sides$comments";
   $guid = uniqid();
   
+  //Open a session if the supplied data was valid
+  //This preserves the details in a way that doesn't expose them to the user
   if ($error == false) {
     database::setGuid($guid, $name, $order, $price, $price_stripe);
   }
     
 } else {
+  //Determine which payment method the user chose and retreive the order from the database
   $token = $_POST['token'];
   $guid = database::getGuid($_POST['guid']);
+  
+  //Make sure we consume the session to prevent duplicate orders
   database::deleteGuid($_POST['guid']);
   $name = $guid['name'];
   $order = $guid['order'];
@@ -191,6 +218,7 @@ if (isset($_POST['name'])) {
     $email = $_POST['email'];
     $declined = false;
     
+    //Charge the card
     \Stripe\Stripe::setApiKey($config["api_private$deployment_name"]);
     try {
     $charge = \Stripe\Charge::create(array(
@@ -199,6 +227,8 @@ if (isset($_POST['name'])) {
       "source" => $token,
       "description" => "$order")
     );
+    
+    //Store the order in the database as paid
     database::setOrder($name, $order, $price, 1);
     mail($email, "Pizza Order", "Your order for $order was successful! You have been charged £" . $price/100 . ".");
     } catch(\Stripe\Error\Card $e) {
@@ -207,6 +237,7 @@ if (isset($_POST['name'])) {
       $declined = true;
     }
   } else if ($token == "cash") {
+    //Store the order in the database as not paid
     $price = $guid['price'];
     database::setOrder($name, $order, $price, 0);
   }
