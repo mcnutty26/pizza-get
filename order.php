@@ -147,7 +147,7 @@ if (isset($_POST['name'])) {
   
   //Charge for the crust if appropriate
   $crust = $_POST['crust'];
-  if ($crust == "d" or $crust == "e" or $crust == "f") {
+  if ($crust == "d" or $crust == "e" or $crust == "f" or $crust == "g") {
     $price += 250;
   }
 
@@ -164,6 +164,8 @@ if (isset($_POST['name'])) {
     $crust_name = "Hotdog Stuffed Crust";
   } else if ($crust == "f") {
     $crust_name = "BBQ Stuffed Crust";
+  } else if ($crust == "g") {
+    $crust_name = "Hotdog Stuffed Crust with Mustard";
   } else {
     $error = true;
   }

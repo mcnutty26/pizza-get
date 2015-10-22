@@ -105,6 +105,7 @@ $isLive = database::getLive()
                 <option value="c">Thin and Crispy Crust</option>
                 <option value="d">Stuffed Crust (+£<?=number_format((float)250/$discount, 2, '.', '')?>)</option>
                 <option value="e">Hotdog Stuffed Crust (+£<?=number_format((float)250/$discount, 2, '.', '')?>)</option>
+                <option value="g">Hotdog Stuffed Crust with Mustard (+£<?=number_format((float)250/$discount, 2, '.', '')?>)</option>
                 <option value="f">BBQ Stuffed Crust (+£<?=number_format((float)250/$discount, 2, '.', '')?>)</option>
               </select>
             </div>
