@@ -8,7 +8,7 @@ v1 features (released 16/10/2015):
 * Support for payments by card and by cash
 * Admin interface for order management
 
-v2 features (pending):
+v1.1 features (released 23/10/2015):
 * Added ability to change between live and test API keys on the control panel
 * Added extra discount options, including pizza only discounts
 * Added support for ordering sides
@@ -17,3 +17,9 @@ v2 features (pending):
 * Support for half and half pizzas
 * Support for choose your own pizzas
 
+Known bugs:
+* Users shouldn't be able to order a small pizza with hotdog stuffed crust
+* Users should be able to order sides with no pizza
+
+Planned features:
+* Support for personal pizzas
