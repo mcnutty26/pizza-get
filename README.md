@@ -24,3 +24,4 @@ Known bugs:
 Planned features:
 * Support for personal pizzas
 * Ability to mark orders as entered into the Dominoes website
+* Modify control panel forms to use Ajax
