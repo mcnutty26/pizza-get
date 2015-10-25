@@ -82,8 +82,8 @@ $isLive = database::getLive()
                   foreach ($result as $row) {
                     echo '<option value="' . $row['id'] . '" >' . $row['pizza'] . ' (£' . number_format((float)$row['large']/$discount, 2, '.', '') . ')</option>';
                   } ?>
-                  <option value="H">Half and Half</option>
-                  <option value="B">Build your Own</option>
+                  <option value="H">Half and Half (varies)</option>
+                  <option value="B">Build your Own (varies)</option>
                 </select>
               </div>
             </div>
@@ -171,22 +171,19 @@ $isLive = database::getLive()
     function processCrust(arg) {
       switch(arg.value) {
         case '1':
-            $("option[value='c']").removeAttr('disabled');
-            $("option[value='d']").removeAttr('disabled');
-            $("option[value='e']").removeAttr('disabled');
-            $("option[value='f']").removeAttr('disabled');
-            break;
         case '2':
             $("option[value='c']").removeAttr('disabled');
             $("option[value='d']").removeAttr('disabled');
             $("option[value='e']").removeAttr('disabled');
             $("option[value='f']").removeAttr('disabled');
+            $("option[value='g']").removeAttr('disabled');
             break;
         default:
             $("option[value='c']").attr("disabled", "disabled");
             $("option[value='d']").attr("disabled", "disabled");
             $("option[value='e']").attr("disabled", "disabled");
             $("option[value='f']").attr("disabled", "disabled");
+            $("option[value='g']").attr("disabled", "disabled");
       }
     }
 	
@@ -202,6 +199,7 @@ $isLive = database::getLive()
         case 'd':
         case 'e':
         case 'f':
+        case 'g':
           if (s.options[s.selectedIndex].value == '3') {
             alert("You can't have this crust with a small pizza :(");
             return false;

@@ -108,7 +108,9 @@ if ($size == "1") {
                     <select class="form-control select select-primary" data-toggle="select" name="pizzaA">
                       <? $result = database::getMenu();
                       foreach ($result as $row) {
-                        echo '<option value="' . $row['id'] . '" >' . $row['pizza'] . '</option>';
+                        if ($row['large'] != 0) {
+                          echo '<option value="' . $row['id'] . '" >' . $row['pizza'] . '</option>';
+                        }
                       } ?>
                     </select>
                   </div>
@@ -119,7 +121,9 @@ if ($size == "1") {
 
                       <? $result = database::getMenu();
                       foreach ($result as $row) {
-                        echo '<option value="' . $row['id'] . '" >' . $row['pizza'] . '</option>';
+                        if ($row['large'] != 0) {
+                          echo '<option value="' . $row['id'] . '" >' . $row['pizza'] . '</option>';
+                        }
                       } ?>
                     </select>
                   </div>
