@@ -147,7 +147,7 @@ if (isset($_POST['name'])) {
   
   //Charge for the crust if appropriate
   $crust = $_POST['crust'];
-  if ($crust == "d" or $crust == "e" or $crust == "f" or $crust == "g") {
+  if (($crust == "d" or $crust == "e" or $crust == "f" or $crust == "g") and $_POST['pizza'] != 18) {
     $price += 250;
   }
 
@@ -193,7 +193,13 @@ if (isset($_POST['name'])) {
   }
   
   //Compile the order into a string and generate a guid to represent the session
-  $order = "A $size_name $crust_name $pizza_name$sides$comments";
+  if ($_POST['pizza'] == 18) {
+    $order = "$pizza_name$sides$comments";
+    $crust_name = "N/A";
+    $size_name = "N/A";
+  } else {
+    $order = "A $size_name $crust_name $pizza_name$sides$comments";
+  }
   $guid = uniqid();
   
   //Open a session if the supplied data was valid

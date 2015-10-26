@@ -206,6 +206,8 @@ $isLive = database::getLive()
             break;
           }
         default:
+          $('#crustSelect').removeAttr("disabled");
+          $('#sizeSelect').removeAttr("disabled");
           document.getElementById("orderForm").submit();
       }
     }
@@ -235,7 +237,12 @@ $isLive = database::getLive()
       } else if (arg.value == "B") {
         $('#orderForm').attr('action', 'custom.php?mode=B');
         $('#submitForm').html('Customise Your Pizza');
+      } else if (arg.value == "18") {
+        $('#crustSelect').attr("disabled", "disabled");
+        $('#sizeSelect').attr("disabled", "disabled");
       } else {
+        $('#crustSelect').removeAttr("disabled");
+        $('#sizeSelect').removeAttr("disabled");
         $('#orderForm').attr('action', 'order.php');
         $('#submitForm').html('Go to Payment');
       }
