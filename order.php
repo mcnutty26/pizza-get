@@ -47,7 +47,7 @@ if (isset($_POST['name'])) {
     $pizza_name = "Build Your Own";
   }
   
-  //Truncate the name ready for database sotrage
+  //Truncate the name ready for database storage
   $name = substr($_POST['name'], 0, 50);
   $size = $_POST['size'];
   $error = false;
