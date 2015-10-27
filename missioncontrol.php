@@ -44,6 +44,10 @@ if ($_SESSION['login'] == $config['cp_guid']) {
     database::setPaid($_POST['mark']);
   }
   
+  if (isset($_POST['entered'])) {
+    database::setEntered($_POST['entered']);
+  }
+  
   if (isset($_POST['del'])) {
     database::deleteOrder($_POST['del']);
   }
@@ -156,6 +160,7 @@ if ($_SESSION['login'] == $config['cp_guid']) {
               <td>Order</td>
               <td>Price</td>
               <td>Paid</td>
+              <td>Entered</td>
               <td>Delete</td>
             </tr>
             <? $result = database::getOrders();
@@ -166,22 +171,25 @@ if ($_SESSION['login'] == $config['cp_guid']) {
               $row_id = $row['id'];
               
               if (($subtotal + $row_price) > 25000) {
-                  echo '<tr><td></td><td>Over £250 web order limit - split here</td><td>' . number_format((float)($subtotal/100), 2, '.', '') . '</td><td></td><td></td>';
+                  echo '<tr><td></td><td>Over £250 web order limit - split here</td><td>' . number_format((float)($subtotal/100), 2, '.', '') . '</td><td></td><td></td><td></td>';
                   $subtotal = 0;
               }
               $subtotal += $row_price;
               $total += $row_price;
               
-              echo '<tr>';
+              echo "<tr id=\"$row_id\">";
               echo '<td>' . substr($row['name'], 0, 15) . '</td>';
               echo '<td>' . $row['order'] . '</td>';
               echo '<td>' . number_format((float)($row_price/100), 2, '.', '') . '</td>';
-              echo '<td>' . ($row['paid'] == 1 ? "<span class=\"fui-check\"></span>" : "<form method=\"post\" action=\"missioncontrol.php\"><input type=\"hidden\" name=\"mark\" value=\"$row_id\"><a class=\"fui-cross\" onclick=\"processTable(this)\" href=\"#\"></a></form>") . '</td>';
-              echo "<td><form method=\"post\" action=\"missioncontrol.php\"><input type=\"hidden\" name=\"del\" value=\"$row_id\"><a class=\"fui-cross\" onclick=\"processTable(this)\" href=\"#\"></a></form></td>";
+              echo "<td id=\"mark$row_id\">" . ($row['paid'] == 1 ? "<span class=\"fui-check\"></span>" : "<a class=\"fui-cross\" onclick=\"processPaid($row_id)\" href=\"#\"></a>") . '</td>';
+              
+              echo "<td id=\"entered$row_id\">" . ($row['entered'] == 1 ? "<span class=\"fui-check\"></span>" : "<a class=\"fui-cross\" onclick=\"processEntered($row_id)\" href=\"#\"></a>") . '</td>';
+              
+              echo "<td><a class=\"fui-cross\" onclick=\"processDelete($row_id)\" href=\"#\"></a></td>";
               echo '</tr>';
             }
             ?>
-            <tr><td></td><td>TOTAL</td><td><?=number_format((float)($total/100), 2, '.', '')?></td><td></td><td></td></tr>
+            <tr><td></td><td>TOTAL</td><td><?=number_format((float)($total/100), 2, '.', '')?></td><td></td><td></td><td></td></tr>
           </table>
         </div>
         <div class="row">  
@@ -209,8 +217,26 @@ if ($_SESSION['login'] == $config['cp_guid']) {
           function processDeploy() {
             document.getElementById("dplyFrm").submit();
           }
-          function processTable(arg) {
-            arg.parentNode.submit();
+          
+          function processDelete(arg) {
+            $.ajax({url: 'missioncontrol.php', method: 'POST', data: {'del': arg}})
+            .done(function() {
+              $('#'+arg).hide();
+            });
+          }
+          
+          function processEntered(arg) {
+            $.ajax({url: 'missioncontrol.php', method: 'POST', data: {'entered': arg}})
+            .done(function() {
+              $('#entered'+arg).html("<span class=\"fui-check\"></span>");
+            });
+          }
+          
+          function processPaid(arg) {
+            $.ajax({url: 'missioncontrol.php', method: 'POST', data: {'mark': arg}})
+            .done(function() {
+              $('#mark'+arg).html("<span class=\"fui-check\"></span>");
+            });
           }
         </script>
         

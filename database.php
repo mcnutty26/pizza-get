@@ -122,9 +122,14 @@ class database {
       return database::singleArgQuery("UPDATE `mcnutty`.`hir2_events` SET `live`=:arg;", $val);
     }
     
-     static function setPaid($id)
+    static function setPaid($id)
     {
       return database::singleArgQuery("UPDATE `mcnutty`.`hir2_orders` SET `paid`=1 WHERE `id`=:arg;", $id);
+    }
+    
+    static function setEntered($id)
+    {
+      return database::singleArgQuery("UPDATE `mcnutty`.`hir2_orders` SET `entered`=1 WHERE `id`=:arg;", $id);
     }
     
     static function deleteOrder($id)
