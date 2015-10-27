@@ -17,11 +17,13 @@ v1.1 features (released 23/10/2015):
 * Support for half and half pizzas
 * Support for choose your own pizzas
 
-Known bugs:
-* Users shouldn't be able to order a small pizza with hotdog stuffed crust
-* Users should be able to order sides with no pizza
+v1.2 features (pending):
+* Added support for personal pizzas
+* Added ability to mark orders as entered into the Dominoes website
+* Modified control panel forms to use Ajax
 
 Planned features:
-* Support for personal pizzas
-* Ability to mark orders as entered into the Dominoes website
-* Modify control panel forms to use Ajax
+* move branding strings to the config file
+* move references to specific pizza ids to the config file
+* include sql to create events table contents and empty pizza
+* create release
