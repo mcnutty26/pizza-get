@@ -16,10 +16,16 @@ $size = $_POST['size'];
 $base = database::getPizza(1);
 if ($size == "1") {
   $price = $base['large'];
+  $topping_price = 130;
 } else if ($size == "2") {
   $price = $base['medium'];
+  $topping_price = 120;
 } else if ($size == "3") {
   $price = $base['small'];
+  $topping_price = 100;
+} else if ($size == "4") {
+  $price = $base['personal'];
+  $topping_price = 80;
 } else {
   //Redirect on impossible pizza size
   header( 'Location: index.php' );
@@ -165,7 +171,7 @@ if ($size == "1") {
                 }
                 echo "<div class=\"form-group col-xs-3\">";
                 echo "<label class=\"checkbox\" for=\"topping" . $row['id'] . "\">";
-                echo "<input type=\"checkbox\" id=\"topping" . $row['id'] . "\" name=\"topping" . $row['id'] . "\" data-toggle=\"checkbox\">" . $row['name'] . " (£" . number_format((float)130/$discount, 2, '.', '') . ")</label>";
+                echo "<input type=\"checkbox\" id=\"topping" . $row['id'] . "\" name=\"topping" . $row['id'] . "\" data-toggle=\"checkbox\">" . $row['name'] . " (£" . number_format((float)$topping_price/$discount, 2, '.', '') . ")</label>";
                 echo "</div>";
                 if ($count == 3) {
                   echo "</div>";

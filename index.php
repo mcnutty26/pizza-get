@@ -76,7 +76,7 @@ $isLive = database::getLive()
             </div>
             <div class="col-xs-6">
               <div class="form-group">
-                <select class="form-control select select-primary" data-toggle="select" name="pizza" onchange="processPizza(this)">
+                <select class="form-control select select-primary" data-toggle="select" name="pizza" id="pizzaSelect" onchange="processPizza(this)">
 
                   <? $result = database::getMenu();
                   foreach ($result as $row) {
@@ -95,6 +95,7 @@ $isLive = database::getLive()
                 <option value="1">Large</option>
                 <option value="2">Medium (-£<?=number_format((float)200/$discount, 2, '.', '')?>)</option>
                 <option value="3">Small (-£<?=number_format((float)400/$discount, 2, '.', '')?>)</option>
+                <option value="4">Personal (varies)</option>
               </select>
             </div>
             
@@ -177,8 +178,11 @@ $isLive = database::getLive()
             $("option[value='e']").removeAttr('disabled');
             $("option[value='f']").removeAttr('disabled');
             $("option[value='g']").removeAttr('disabled');
+            $("option[value='b']").removeAttr('disabled');
             break;
-        default:
+        case '4':
+            $("option[value='b']").attr("disabled", "disabled");
+        case '3':
             $("option[value='c']").attr("disabled", "disabled");
             $("option[value='d']").attr("disabled", "disabled");
             $("option[value='e']").attr("disabled", "disabled");
@@ -194,21 +198,34 @@ $isLive = database::getLive()
       }
       var c = document.getElementById("crustSelect");
       var s = document.getElementById("sizeSelect");
-      switch(c.options[c.selectedIndex].value) {
-        case 'c':
-        case 'd':
-        case 'e':
-        case 'f':
-        case 'g':
-          if (s.options[s.selectedIndex].value == '3') {
-            alert("You can't have this crust with a small pizza :(");
-            return false;
-            break;
-          }
-        default:
-          $('#crustSelect').removeAttr("disabled");
-          $('#sizeSelect').removeAttr("disabled");
-          document.getElementById("orderForm").submit();
+      var p = document.getElementById("pizzaSelect");
+      console.log(c.options[c.selectedIndex].value);
+      console.log(p.options[p.selectedIndex].value);
+      console.log(s.options[s.selectedIndex].value);
+      if (p.options[p.selectedIndex].value == "H" && s.options[s.selectedIndex].value == "4") {
+        alert("You can't have this size with a half and half pizza :(");
+        return false;
+      } else {        
+        switch(c.options[c.selectedIndex].value) {
+          case 'b':
+            if (s.options[s.selectedIndex].value == '4') {
+              alert("You can't have this crust with this size pizza :(");
+              return false;
+            }
+          case 'c':
+          case 'd':
+          case 'e':
+          case 'f':
+          case 'g':
+            if (c.options[c.selectedIndex].value == 'g' && s.options[s.selectedIndex].value == '3') {
+              alert("You can't have this crust with this size pizza :(");
+              return false;
+            }
+          default:
+            $('#crustSelect').removeAttr("disabled");
+            $('#sizeSelect').removeAttr("disabled");
+            document.getElementById("orderForm").submit();
+        }
       }
     }
     
@@ -232,11 +249,17 @@ $isLive = database::getLive()
     
     function processPizza(arg) {
       if (arg.value == "H") {
+        $('#crustSelect').removeAttr("disabled");
+        $('#sizeSelect').removeAttr("disabled");
         $('#orderForm').attr('action', 'custom.php?mode=H');
         $('#submitForm').html('Customise Your Pizza');
+        $("option[value='4']").attr('disabled', 'disabled');
       } else if (arg.value == "B") {
+        $('#crustSelect').removeAttr("disabled");
+        $('#sizeSelect').removeAttr("disabled");
         $('#orderForm').attr('action', 'custom.php?mode=B');
         $('#submitForm').html('Customise Your Pizza');
+        $("option[value='4']").removeAttr('disabled');
       } else if (arg.value == "18") {
         $('#crustSelect').attr("disabled", "disabled");
         $('#sizeSelect').attr("disabled", "disabled");

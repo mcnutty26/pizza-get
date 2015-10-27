@@ -23,6 +23,7 @@ if (isset($_POST['name'])) {
   $toppings = database::getToppings();
   $discount = database::getDiscount();
   $discount_sides = database::getDiscountSides();
+  $error = false;
   
   //Process half and half
   if ($_POST['pizza'] == "H") {
@@ -38,6 +39,10 @@ if (isset($_POST['name'])) {
     
     //Set the pizza name to something appropriate
     $pizza_name = database::getPizzaName($_POST['pizzaA']) . '/' . database::getPizzaName($_POST['pizzaB']);
+    
+    if ($size > 3) {
+      $error == true;
+    }
   } else if ($_POST['pizza']!= "B") {
     
     //For normal pizzas we can just look up the name
@@ -50,7 +55,6 @@ if (isset($_POST['name'])) {
   //Truncate the name ready for database storage
   $name = substr($_POST['name'], 0, 50);
   $size = $_POST['size'];
-  $error = false;
   
   //If the user specified an invalid pizza, don't open a session for them
   if ($pizza_name == false) {
@@ -60,30 +64,43 @@ if (isset($_POST['name'])) {
   //Set the price based on the pizza size
   if ($size == "1") {
     $size_name = "Large";
+    $topping_price = 130;
     foreach ($menu as $row) {
       if ($row['id'] == $pizza) {
         $price = $row['large'];
       } else if ($row['id'] == 1 and $_POST['pizza'] == "B") {
         $price = $row['large'];
-      }
+      } 
     }
   } else if ($size == "2") {
     $size_name = "Medium";
+    $topping_price = 120;
     foreach ($menu as $row) {
       if ($row['id'] == $pizza) {
         $price = $row['medium'];
       } else if ($row['id'] == 1 and $_POST['pizza'] == "B") {
         $price = $row['medium'];
-      }
+      } 
     }
   } else if ($size == "3") {
     $size_name = "Small";
+    $topping_price = 100;
     foreach ($menu as $row) {
       if ($row['id'] == $pizza) {
       $price = $row['small'];
       } else if ($row['id'] == 1 and $_POST['pizza'] == "B") {
         $price = $row['small'];
       }
+    }
+  } else if ($size == "4") {
+    $size_name = "Personal";
+    $topping_price = 80;
+    foreach ($menu as $row) {
+      if ($row['id'] == $pizza) {
+      $price = $row['personal'];
+      } else if ($row['id'] == 1 and $_POST['pizza'] == "B") {
+        $price = $row['personal'];
+      } 
     }
   } else {
     $error = true;
@@ -103,7 +120,7 @@ if (isset($_POST['name'])) {
         $pizza_name = $pizza_name . ', ' . "Tomato Sauce";
       }
       if ($topping_count > 1) {
-          $price += 130/$discount;
+          $price += $topping_price;
         }
         $topping_count++;
     } else if ($_POST['bsauce'] == "on") {
@@ -113,7 +130,7 @@ if (isset($_POST['name'])) {
         $pizza_name = $pizza_name . ', ' . "BBQ Sauce";
       }
       if ($topping_count > 1) {
-          $price += 130/$discount;
+          $price += $topping_price;
         }
         $topping_count++;
     } else {
@@ -128,7 +145,7 @@ if (isset($_POST['name'])) {
     } else {
       $pizza_name = $pizza_name . ', ' . "Mozarella Cheese";
       if ($topping_count > 1) {
-        $price += 130/$discount;
+        $price += $topping_price;
       }
       $topping_count++;
     }
@@ -138,7 +155,7 @@ if (isset($_POST['name'])) {
       if (isset($_POST['topping' . $row['id']])) {
         $pizza_name = $pizza_name . ', ' . $row['name'];
         if ($topping_count > 1) {
-          $price += 130/$discount;
+          $price += $topping_price;
         }
         $topping_count++;
       }
@@ -147,24 +164,24 @@ if (isset($_POST['name'])) {
   
   //Charge for the crust if appropriate
   $crust = $_POST['crust'];
-  if (($crust == "d" or $crust == "e" or $crust == "f" or $crust == "g") and $_POST['pizza'] != 18) {
+  if (($crust == "d" or $crust == "e" or $crust == "f" or $crust == "g") and $_POST['pizza'] != 18 and $size < 3) {
     $price += 250;
   }
 
   //Determine the name of the chosen crust
   if ($crust == "a") {
     $crust_name = "Normal Crust";
-  } else if ($crust == "b") {
+  } else if ($crust == "b" and $size < 4) {
     $crust_name = "Italian Crust";
-  } else if ($crust == "c") {
+  } else if ($crust == "c" and $size < 3) {
     $crust_name = "Thin and Crispy Crust";
-  } else if ($crust == "d") {
+  } else if ($crust == "d" and $size < 3) {
     $crust_name = "Stuffed Crust";
-  } else if ($crust == "e") {
+  } else if ($crust == "e" and $size < 3) {
     $crust_name = "Hotdog Stuffed Crust";
-  } else if ($crust == "f") {
+  } else if ($crust == "f" and $size < 3) {
     $crust_name = "BBQ Stuffed Crust";
-  } else if ($crust == "g") {
+  } else if ($crust == "g" and $size < 3) {
     $crust_name = "Hotdog Stuffed Crust with Mustard";
   } else {
     $error = true;
