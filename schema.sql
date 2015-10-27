@@ -4,7 +4,6 @@ CREATE TABLE `hir2_events` (
   `discountSides` tinyint(1) NOT NULL,
   `active` tinyint(1) NOT NULL,
   `live` tinyint(1) NOT NULL,
-  `lan` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
@@ -49,3 +48,8 @@ CREATE TABLE `hir2_toppings` (
   `name` varchar(50) CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+INSERT INTO `hir2_events` (`id`, `discount`, `discountSides`, `active`, `live`) VALUES
+(1, 1, 1, 1, 0);
+INSERT INTO `hir2_pizza` (`id`, `pizza`, `personal`, `small`, `medium`, `large`) VALUES
+(1, 'No Pizza - Sides Only', 0, 0, 0, 0);
