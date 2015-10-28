@@ -68,6 +68,9 @@ $isLive = database::getLive()
       <div class="login-form">
         <form action="order.php" method="post" id="orderForm" onsubmit="return validateCrust()">
           <div class="row">
+            <div class="alert alert-danger" id="size-error">
+              Whoops! You can't have those options with that size pizza :(
+            </div>
             <div class="col-xs-6">
               <div class="form-group" id="nameField">
                 <input type="text" class="form-control " placeholder="Enter your name" id="login-name" name="name" onfocus="resetName()"/>
@@ -199,17 +202,14 @@ $isLive = database::getLive()
       var c = document.getElementById("crustSelect");
       var s = document.getElementById("sizeSelect");
       var p = document.getElementById("pizzaSelect");
-      console.log(c.options[c.selectedIndex].value);
-      console.log(p.options[p.selectedIndex].value);
-      console.log(s.options[s.selectedIndex].value);
       if (p.options[p.selectedIndex].value == "H" && s.options[s.selectedIndex].value == "4") {
-        alert("You can't have this size with a half and half pizza :(");
+        $('#size-error').show();
         return false;
       } else {        
         switch(c.options[c.selectedIndex].value) {
           case 'b':
             if (s.options[s.selectedIndex].value == '4') {
-              alert("You can't have this crust with this size pizza :(");
+              $('#size-error').show();
               return false;
             }
           case 'c':
@@ -217,8 +217,8 @@ $isLive = database::getLive()
           case 'e':
           case 'f':
           case 'g':
-            if (c.options[c.selectedIndex].value == 'g' && s.options[s.selectedIndex].value == '3') {
-              alert("You can't have this crust with this size pizza :(");
+            if (s.options[s.selectedIndex].value == '3') {
+              $('#size-error').show();
               return false;
             }
           default:
@@ -235,6 +235,7 @@ $isLive = database::getLive()
     
     function init() {
       $('#sides').hide();
+      $('#size-error').hide();
     }
     
     function processSides() {
