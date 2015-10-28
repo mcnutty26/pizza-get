@@ -214,10 +214,8 @@ $isLive = database::getLive()
       } else {        
         switch(c.options[c.selectedIndex].value) {
           case 'b':
-          console.log(1);
             if (s.options[s.selectedIndex].value == '4') {
               $('#size-error').show();
-              console.log(2);
               return false;
             } else {
               $('#crustSelect').removeAttr("disabled");
@@ -226,21 +224,15 @@ $isLive = database::getLive()
             }
             break;
           case 'c':
-          console.log(3);
           case 'd':
-          console.log(4);
           case 'e':
-          console.log(5);
           case 'f':
-          console.log(6);
           case 'g':
-          console.log(7);
             if (s.options[s.selectedIndex].value == '3') {
               $('#size-error').show();
               return false;
             }
           default:
-          console.log(8);
             $('#crustSelect').removeAttr("disabled");
             $('#sizeSelect').removeAttr("disabled");
             document.getElementById("orderForm").submit();
