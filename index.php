@@ -228,7 +228,7 @@ $isLive = database::getLive()
           case 'e':
           case 'f':
           case 'g':
-            if (s.options[s.selectedIndex].value == '3') {
+            if (s.options[s.selectedIndex].value == '3' || s.options[s.selectedIndex].value == '4') {
               $('#size-error').show();
               return false;
             }
