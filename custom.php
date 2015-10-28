@@ -72,6 +72,7 @@ if ($size == "1") {
         <input type="hidden" name="size" value="<?=$_POST['size']?>">
         <input type="hidden" name="crust" value="<?=$_POST['crust']?>">
         <input type="hidden" name="comments" value="<?=$_POST['comments']?>">
+        <input type="hidden" name="pizza" value="<?=$_POST['pizza']?>">
         <?$result = database::getSides();
         foreach ($result as $row) {
           if (isset($_POST['side' . $row['id']])) {
@@ -100,7 +101,6 @@ if ($size == "1") {
         
         <div class="login-form">
           <div id="hnh">
-              <input type="hidden" name="pizza" value="H">
               <div class="row">
                 <div class="col-xs-6">
                   Left Half
@@ -139,7 +139,6 @@ if ($size == "1") {
             </form>
           </div>
           <div id="byo">
-            <input type="hidden" name="pizza" value="B">
             Pizza Base (£<?=number_format((float)$price/$discount, 2, '.', '')?>):
             <div class="form-group row">
               <div class="col-xs-3">
