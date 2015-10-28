@@ -12,7 +12,7 @@ return array(
   'cp_guid'     => 'some-guid',
   'session_path'=> '/path/to/sessions',
   'front_string'     => "At gaming? Want pizza? We've got you covered.",
-  'empty_pizza'      => 42,
+  'empty_pizza'      => 18,
   'basic_pizza'      => 1
 );
 ?>
