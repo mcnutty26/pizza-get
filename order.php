@@ -68,7 +68,7 @@ if (isset($_POST['name'])) {
     foreach ($menu as $row) {
       if ($row['id'] == $pizza) {
         $price = $row['large'];
-      } else if ($row['id'] == 1 and $_POST['pizza'] == "B") {
+      } else if ($row['id'] == $config['basic_pizza'] and $_POST['pizza'] == "B") {
         $price = $row['large'];
       } 
     }
@@ -78,7 +78,7 @@ if (isset($_POST['name'])) {
     foreach ($menu as $row) {
       if ($row['id'] == $pizza) {
         $price = $row['medium'];
-      } else if ($row['id'] == 1 and $_POST['pizza'] == "B") {
+      } else if ($row['id'] == $config['basic_pizza'] and $_POST['pizza'] == "B") {
         $price = $row['medium'];
       } 
     }
@@ -88,7 +88,7 @@ if (isset($_POST['name'])) {
     foreach ($menu as $row) {
       if ($row['id'] == $pizza) {
       $price = $row['small'];
-      } else if ($row['id'] == 1 and $_POST['pizza'] == "B") {
+      } else if ($row['id'] == $config['basic_pizza'] and $_POST['pizza'] == "B") {
         $price = $row['small'];
       }
     }
@@ -98,7 +98,7 @@ if (isset($_POST['name'])) {
     foreach ($menu as $row) {
       if ($row['id'] == $pizza) {
       $price = $row['personal'];
-      } else if ($row['id'] == 1 and $_POST['pizza'] == "B") {
+      } else if ($row['id'] == $config['basic_pizza'] and $_POST['pizza'] == "B") {
         $price = $row['personal'];
       } 
     }
@@ -164,7 +164,7 @@ if (isset($_POST['name'])) {
   
   //Charge for the crust if appropriate
   $crust = $_POST['crust'];
-  if (($crust == "d" or $crust == "e" or $crust == "f" or $crust == "g") and $_POST['pizza'] != 18 and $size < 3) {
+  if (($crust == "d" or $crust == "e" or $crust == "f" or $crust == "g") and $_POST['pizza'] != $config['empty_pizza'] and $size < 3) {
     $price += 250;
   }
 
@@ -210,7 +210,7 @@ if (isset($_POST['name'])) {
   }
   
   //Compile the order into a string and generate a guid to represent the session
-  if ($_POST['pizza'] == 18) {
+  if ($_POST['pizza'] == $config['empty_pizza']) {
     $order = "$pizza_name$sides$comments";
     $crust_name = "N/A";
     $size_name = "N/A";

@@ -10,6 +10,9 @@ return array(
   'api_private_test' => 'stripe-api-private',
   'cp_pass'     => 'missioncontrol-password',
   'cp_guid'     => 'some-guid',
-  'session_path'=> '/path/to/sessions'
+  'session_path'=> '/path/to/sessions',
+  'front_string'     => "At gaming? Want pizza? We've got you covered.",
+  'empty_pizza'      => 42,
+  'basic_pizza'      => 1
 );
 ?>

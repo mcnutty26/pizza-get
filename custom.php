@@ -1,5 +1,6 @@
 <?
 require_once 'database.php'; 
+$config = include('config.php');
 
 $active = database::getActive();
 
@@ -13,7 +14,7 @@ $isLive = database::getLive();
 
 //Load and correctly display the base price of the pizza
 $size = $_POST['size'];
-$base = database::getPizza(1);
+$base = database::getPizza($config['basic_pizza']);
 if ($size == "1") {
   $price = $base['large'];
   $topping_price = 130;

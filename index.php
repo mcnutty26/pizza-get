@@ -62,7 +62,7 @@ $isLive = database::getLive()
       </div> <!-- /row -->
       
       <div class="demo-type-example">
-        <h3>At gaming? Want pizza? We've got you covered.</h3>
+        <h3><?=$config['front_string']?></h3>
       </div>
       <? if ($active == 1) { ?>
       <div class="login-form">
@@ -260,7 +260,7 @@ $isLive = database::getLive()
         $('#orderForm').attr('action', 'custom.php?mode=B');
         $('#submitForm').html('Customise Your Pizza');
         $("option[value='4']").removeAttr('disabled');
-      } else if (arg.value == "18") {
+      } else if (arg.value == "<?=$config['empty_pizza']?>") {
         $('#crustSelect').attr("disabled", "disabled");
         $('#sizeSelect').attr("disabled", "disabled");
       } else {
