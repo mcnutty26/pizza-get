@@ -333,7 +333,7 @@ if (isset($_POST['name'])) {
         
         <div class="row">
           <div class="form-group col-xs-6">
-            <p>Name: <?=$name?></p>
+            <p>Name: <?=htmlspecialchars($name)?></p>
           </div>
           <div class="form-group col-xs-6">
             <p>Order: <?="$pizza_name$sides"?></p>
@@ -351,7 +351,7 @@ if (isset($_POST['name'])) {
         </div> <!-- /row -->
         
         <div class="form-group">
-          <p>Comments: <?=$comments?></p>
+          <p>Comments: <?=htmlspecialchars($comments)?></p>
         </div>
 
         <div class="row">
@@ -431,11 +431,11 @@ if (isset($_POST['name'])) {
       <? } else { ?>
         
         <div class="form-group">
-          <p>Name: <?=$name?></p>
+          <p>Name: <?=htmlspecialchars($name)?></p>
         </div>
         
         <div class="form-group">
-          <p>Order: <?=$order?></p>
+          <p>Order: <?=htmlspecialchars($order)?></p>
         </div><!-- /btn-group -->
       
         <div class="form-group">

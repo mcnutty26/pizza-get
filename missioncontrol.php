@@ -178,8 +178,8 @@ if ($_SESSION['login'] == $config['cp_guid']) {
               $total += $row_price;
               
               echo "<tr id=\"$row_id\">";
-              echo '<td>' . substr($row['name'], 0, 15) . '</td>';
-              echo '<td>' . $row['order'] . '</td>';
+              echo '<td>' . htmlspecialchars(substr($row['name'], 0, 15)) . '</td>';
+              echo '<td>' . htmlspecialchars($row['order']) . '</td>';
               echo '<td>' . number_format((float)($row_price/100), 2, '.', '') . '</td>';
               echo "<td id=\"mark$row_id\">" . ($row['paid'] == 1 ? "<span class=\"fui-check\"></span>" : "<a class=\"fui-cross\" onclick=\"processPaid($row_id)\" href=\"#\"></a>") . '</td>';
               
