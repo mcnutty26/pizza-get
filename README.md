@@ -17,7 +17,7 @@ v1.1 features (released 23/10/2015):
 * Support for half and half pizzas
 * Support for choose your own pizzas
 
-v1.2 features (pending):
+v1.2 features (released 29/10/2015):
 * Added support for personal pizzas
 * Added ability to mark orders as entered into the Dominoes website
 * Modified control panel forms to use Ajax
