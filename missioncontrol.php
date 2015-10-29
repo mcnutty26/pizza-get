@@ -181,11 +181,11 @@ if ($_SESSION['login'] == $config['cp_guid']) {
               echo '<td>' . htmlspecialchars(substr($row['name'], 0, 15)) . '</td>';
               echo '<td>' . htmlspecialchars($row['order']) . '</td>';
               echo '<td>' . number_format((float)($row_price/100), 2, '.', '') . '</td>';
-              echo "<td id=\"mark$row_id\">" . ($row['paid'] == 1 ? "<span class=\"fui-check\"></span>" : "<a class=\"fui-cross\" onclick=\"processPaid($row_id)\" href=\"#\"></a>") . '</td>';
+              echo "<td id=\"mark$row_id\">" . ($row['paid'] == 1 ? "<span class=\"fui-check\"></span>" : "<button class=\"fui-cross\" onclick=\"processPaid($row_id)\"></button>") . '</td>';
               
-              echo "<td id=\"entered$row_id\">" . ($row['entered'] == 1 ? "<span class=\"fui-check\"></span>" : "<a class=\"fui-cross\" onclick=\"processEntered($row_id)\" href=\"#\"></a>") . '</td>';
+              echo "<td id=\"entered$row_id\">" . ($row['entered'] == 1 ? "<span class=\"fui-check\"></span>" : "<button class=\"fui-cross\" onclick=\"processEntered($row_id)\"></button>") . '</td>';
               
-              echo "<td><a class=\"fui-cross\" onclick=\"processDelete($row_id)\" href=\"#\"></a></td>";
+              echo "<td><button class=\"fui-cross\" onclick=\"processDelete($row_id)\"></button></td>";
               echo '</tr>';
             }
             ?>
@@ -221,7 +221,7 @@ if ($_SESSION['login'] == $config['cp_guid']) {
           function processDelete(arg) {
             $.ajax({url: 'missioncontrol.php', method: 'POST', data: {'del': arg}})
             .done(function() {
-              $('#'+arg).hide();
+              $('#'+arg).hide('fast');
             });
           }
           
