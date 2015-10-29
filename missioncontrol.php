@@ -93,7 +93,7 @@ if ($_SESSION['login'] == $config['cp_guid']) {
       <script src="dist/js/vendor/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body>
+  <body onload="init()>
     <div class="container">
       <div class="row demo-row">
         <div class="col-xs-12">
@@ -181,11 +181,11 @@ if ($_SESSION['login'] == $config['cp_guid']) {
               echo '<td>' . htmlspecialchars(substr($row['name'], 0, 15)) . '</td>';
               echo '<td>' . htmlspecialchars($row['order']) . '</td>';
               echo '<td>' . number_format((float)($row_price/100), 2, '.', '') . '</td>';
-              echo "<td id=\"mark$row_id\">" . ($row['paid'] == 1 ? "<span class=\"fui-check\"></span>" : "<button class=\"fui-cross\" onclick=\"processPaid($row_id)\"></button>") . '</td>';
+              echo "<td id=\"mark$row_id\">" . ($row['paid'] == 1 ? "<span class=\"fui-check\"></span>" : "<a class=\"fui-cross ajax-button\" onclick=\"processPaid($row_id)\"></a>") . '</td>';
               
-              echo "<td id=\"entered$row_id\">" . ($row['entered'] == 1 ? "<span class=\"fui-check\"></span>" : "<button class=\"fui-cross\" onclick=\"processEntered($row_id)\"></button>") . '</td>';
+              echo "<td id=\"entered$row_id\">" . ($row['entered'] == 1 ? "<span class=\"fui-check\"></span>" : "<a class=\"fui-cross ajax-button\" onclick=\"processEntered($row_id)\"></a>") . '</td>';
               
-              echo "<td><button class=\"fui-cross\" onclick=\"processDelete($row_id)\"></button></td>";
+              echo "<td><a class=\"fui-cross ajax-button\" onclick=\"processDelete($row_id)\"></a></td>";
               echo '</tr>';
             }
             ?>
@@ -236,6 +236,12 @@ if ($_SESSION['login'] == $config['cp_guid']) {
             $.ajax({url: 'missioncontrol.php', method: 'POST', data: {'mark': arg}})
             .done(function() {
               $('#mark'+arg).html("<span class=\"fui-check\"></span>");
+            });
+          }
+          
+          function init() {
+            $(".ajax-button").click(function(event){
+              event.preventDefault();
             });
           }
         </script>
