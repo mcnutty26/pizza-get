@@ -429,7 +429,7 @@ if (isset($_POST['name'])) {
       }
       </script>
       <? } else { ?>
-        
+
         <div class="form-group">
           <p>Name: <?=htmlspecialchars($name)?></p>
         </div>
@@ -444,13 +444,21 @@ if (isset($_POST['name'])) {
 
         <div class="form-group">
           <? if (!$declined and ($token != "cash") and ($token != "duplicate")) { ?>
-          <p>Payment completed successfully! A confirmation email has been sent to <?=$email?></p>
+          <div class="alert alert-success" id="size-error">
+            Payment completed successfully! A confirmation email has been sent to <?=$email?></p>
+          </div>
           <? } else if (($token != "cash") and ($token != "duplicate")) { ?>
-          <p>Your payment was declined. You may have submitted the form twice - check to see if you have a confirmation email. Alternatively <a href="index.php">try again</a> or use cash.</p>
+          <div class="alert alert-danger" id="size-error">
+            Your payment was declined (you have not been charged). You may have submitted the form twice - check to see if you have a confirmation email. Alternatively <a href="index.php">try again</a> or use cash.
+          </div>
           <? } else if ($token != "duplicate"){ ?>
-          <p>All done! When you're ready, go and pay for your pizza.</p>
+          <div class="alert alert-success" id="size-error">
+            All done! When you're ready, go and pay for your pizza.
+          </div>
           <? } else {?>
-          <p>Looks like there was a problem with your order! You may have submitted the form twice. If not, please <a href="index.php">try again</a>.</p>
+          <div class="alert alert-danger" id="size-error">
+            Looks like there was a problem with your order! You may have submitted the form twice. If not, please <a href="index.php">try again</a>.
+          </div>
           <? } ?>
       </div>
       <script>
