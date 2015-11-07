@@ -34,7 +34,22 @@ INSERT INTO `hir2_sides` (`id`, `name`, `price`) VALUES
 (15, 'Coleslaw', 199),
 (16, 'Dips', 49),
 (17, 'The Big Garlic and Herb Dip', 100),
-(18, 'Chilli Flakes', 10);
+(18, 'Chilli Flakes', 10),
+(19, 'Chocolate Melt', 399),
+(20, 'Chocolate Brownies', 399),
+(21, 'Domino''s Cookies', 399),
+(22, 'Ben & Jerry''s - Caramel Chew Chew', 499),
+(23, 'Ben & Jerry''s - Chocolate Fudge Brownie', 499),
+(24, 'Ben & Jerry''s - Cookie Dough', 499),
+(25, 'Ben & Jerry''s - Greek Style Strawberry', 499),
+(26, 'Ben & Jerry''s - Peanut Butter Cup', 499),
+(27, 'Ben & Jerry''s - Phish Food', 499),
+(28, 'Monster Energy (500ml)', 159),
+(29, 'Dr Pepper (500ml)', 125),
+(30, 'Coca Cola (500ml)', 125),
+(31, 'Diet Coca Cola (500ml)', 125),
+(32, 'Coke Zero (500ml)', 125),
+(33, 'Coke Life (500ml)', 125);
 
 INSERT INTO `hir2_toppings` (`id`, `name`) VALUES
 (1, 'Anchovies'),
