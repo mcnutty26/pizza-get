@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS `hir2_log` (
   `order` varchar(500) CHARACTER SET utf8 NOT NULL,
   `price` int(11) NOT NULL,
   `cardTransaction` tinyint(1) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 )
 

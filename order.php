@@ -255,6 +255,9 @@ if (isset($_POST['name'])) {
     
     //Store the order in the database as paid
     database::setOrder($name, $order, $price, 1);
+    if ($isLive == 1) {
+      database::setLog($name, $order, $price, 1);
+    }
     mail($email, "Pizza Order", "Your order for $order was successful! You have been charged £" . $price/100 . ".");
     } catch(\Stripe\Error\Card $e) {
       $declined = true;
@@ -265,6 +268,9 @@ if (isset($_POST['name'])) {
     //Store the order in the database as not paid
     $price = $guid['price'];
     database::setOrder($name, $order, $price, 0);
+    if ($isLive == 1) {
+      database::setLog($name, $order, $price, 0);
+    }
   }
 }
 ?>

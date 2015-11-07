@@ -149,12 +149,19 @@ class database {
       $stmt->bindParam(':order', $order);
       $stmt->bindParam(':price', $price);
       $stmt->bindParam(':paid', $paid);
-      $stmt2 = database::getDbh()->prepare("INSERT INTO `mcnutty`.`hir2_log` (`id` ,`name` ,`order` ,`price` ,`cardTransaction`) VALUES (NULL ,  :name,  :order,  :price,  :cardTransaction);");
-      $stmt2->bindParam(':name', $name);
-      $stmt2->bindParam(':order', $order);
-      $stmt2->bindParam(':price', $price);
-      $stmt2->bindParam(':cardTransaction', $paid);
-      $stmt2->execute();
+      if ($stmt->execute()) {
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+      }
+      return false;
+    }
+    
+    static function setLog($name, $order, $price, $paid)
+    {
+      $stmt = database::getDbh()->prepare("INSERT INTO `mcnutty`.`hir2_log` (`id` ,`name` ,`order` ,`price` ,`cardTransaction`) VALUES (NULL ,  :name,  :order,  :price,  :cardTransaction);");
+      $stmt->bindParam(':name', $name);
+      $stmt->bindParam(':order', $order);
+      $stmt->bindParam(':price', $price);
+      $stmt->bindParam(':cardTransaction', $paid);
       if ($stmt->execute()) {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
       }
