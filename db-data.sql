@@ -49,7 +49,9 @@ INSERT INTO `hir2_sides` (`id`, `name`, `price`) VALUES
 (30, 'Coca Cola (500ml)', 125),
 (31, 'Diet Coca Cola (500ml)', 125),
 (32, 'Coke Zero (500ml)', 125),
-(33, 'Coke Life (500ml)', 125);
+(33, 'Coke Life (500ml)', 125),
+(34, 'Fanta (500ml)', 125),
+(35, 'Sprite (500ml)', 125);
 
 INSERT INTO `hir2_toppings` (`id`, `name`) VALUES
 (1, 'Anchovies'),
