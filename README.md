@@ -26,3 +26,4 @@ v1.2 features (released 29/10/2015):
 v1.3 features (pending):
 * Make it more obvious that payments were accepted/declined
 * Add support for drinks and ice creams
+* Added logging feature for orders
