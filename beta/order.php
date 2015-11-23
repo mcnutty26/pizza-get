@@ -8,7 +8,7 @@ $config = include('config.php');
 $payment_methods = array(new plugin_stripe());
 
 //Redirect the user if they navigated here accidentally or orders are closed
-if (!(isset($_POST['name']) or isset($_POST['token'])) or $active == false) {
+if (!(isset($_POST['name']) or isset($_POST['token'])) or $config['active'] == false) {
   header( 'Location: index.php' ) ;
 }
 
@@ -53,7 +53,7 @@ if (isset($_POST['name'])) {
     
   </head>
   <body onload="init()">
-  <? if ($isLive == 0) { ?>
+  <? if ($config['live'] == 0) { ?>
   <footer>
     <div class="container">
       <p>TEST MODE</p>
@@ -167,7 +167,7 @@ if (isset($_POST['name'])) {
       <? } ?>
       </div>
     </div> <!-- /container -->
-    <? if ($isLive == 0) { ?>
+    <? if ($config['live'] == 0) { ?>
     <footer>
       <div class="container">
         <p>TEST MODE</p>
