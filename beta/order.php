@@ -1,7 +1,7 @@
 <?
 require_once 'database.php';
 spl_autoload_register(function ($class) {
-    include 'plugins/' . $class . '.class.php';
+    include 'plugins/' . $class . '.php';
 });
 
 $config = include('config.php');
