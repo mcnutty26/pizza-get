@@ -104,9 +104,16 @@ class database {
       return database::singleArgQuery("SELECT pizza FROM hir2_pizza WHERE id = :arg LIMIT 1", $id)[0]['pizza'];
     }
     
+    static function getIngredients($id)
+    {
+      return database::singleArgQuery("SELECT * FROM hir2_ingredients WHERE pizza = :arg", $id);
+    }
+    
     static function getGuid($guid)
     {
-      return $result = database::singleArgQuery("SELECT * FROM `mcnutty`.`hir2_sessions` WHERE `guid`=:arg LIMIT 1", $guid)[0];
+      $result = database::singleArgQuery("SELECT * FROM `mcnutty`.`hir2_sessions` WHERE `guid`=:arg LIMIT 1", $guid)[0];
+      database::deleteGuid($guid);
+      return $result;
     }
     
     static function setDiscount($val)
@@ -175,16 +182,17 @@ class database {
       return false;
     }
 
-    static function setGuid($guid, $name, $order, $price, $price_stripe)
+    static function setGuid($name, $order, $price)
     {
-      $stmt = database::getDbh()->prepare("INSERT INTO  `mcnutty`.`hir2_sessions` (`id` ,`guid`, `name`, `order` ,`price`, `price_stripe`) VALUES (NULL ,  :guid, :name, :order, :price, :price_stripe);");
+      $guid = uniqid();
+      $stmt = database::getDbh()->prepare("INSERT INTO  `mcnutty`.`hir2_sessions` (`id` ,`guid`, `name`, `order` ,`price`, `price_stripe`) VALUES (NULL ,  :guid, :name, :order, :price, 0);");
       $stmt->bindParam(':guid', $guid);
       $stmt->bindParam(':name', $name);
       $stmt->bindParam(':order', $order);
       $stmt->bindParam(':price', $price);
       $stmt->bindParam(':price_stripe', $price_stripe);
       if ($stmt->execute()) {
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $guid;
       }
       return false;
     }

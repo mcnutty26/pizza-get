@@ -256,7 +256,7 @@ require_once 'database.php';
       if (arg.value == "H") {
         $('#crustSelect').removeAttr("disabled");
         $('#sizeSelect').removeAttr("disabled");
-        $('#orderForm').attr('action', 'custom.php');
+        $('#orderForm').attr('action', 'half.php');
         $('#submitForm').html('Customise Your Pizza');
         $("option[value='4']").attr('disabled', 'disabled');
       } else if (arg.value == "B") {

@@ -1,12 +1,15 @@
 <?
 abstract class payment {
 
-    private $name;
-    private $token_type;
-    private $payment_accept;
-    private $payment_reject;
+    public $name;
+    public $token_type;
+    public $payment_accept;
+    public $payment_reject;
+    public $calculated_price;
 
-    final function __construct($name, $token_type, $payment_accept, $payment_reject) {
+    abstract function __construct() {}
+
+    final function init($name, $token_type, $payment_accept, $payment_reject){
         $this->name = $name;
         $this->token_type = $token_type;
         $this->payment_accept = $payment_accept;
@@ -29,7 +32,7 @@ abstract class payment {
         return $this->payment_reject;
     }
 
-    abstract function prepayment($price-pizza, $price-sides, $description, $config);
-    abstract function postpayment($price-pizza, $price-sides, $description, $config, $token);
+    abstract function prepayment($price, $name, $description, $config);
+    abstract function postpayment($config, $token);
 }
 ?>
