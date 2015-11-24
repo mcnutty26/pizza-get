@@ -182,15 +182,15 @@ class database {
       return false;
     }
 
-    static function setGuid($name, $order, $price)
+    static function setGuid($name, $order, $price, method)
     {
       $guid = uniqid();
-      $stmt = database::getDbh()->prepare("INSERT INTO  `mcnutty`.`hir2_sessions` (`id` ,`guid`, `name`, `order` ,`price`, `price_stripe`) VALUES (NULL ,  :guid, :name, :order, :price, 0);");
+      $stmt = database::getDbh()->prepare("INSERT INTO  `mcnutty`.`hir2_sessions` (`id` ,`guid`, `name`, `order` ,`price`, `method`) VALUES (NULL ,  :guid, :name, :order, :price, :method);");
       $stmt->bindParam(':guid', $guid);
       $stmt->bindParam(':name', $name);
       $stmt->bindParam(':order', $order);
       $stmt->bindParam(':price', $price);
-      $stmt->bindParam(':price_stripe', $price_stripe);
+      $stmt->bindParam(':method', $method);
       if ($stmt->execute()) {
         return $guid;
       }

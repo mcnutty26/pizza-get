@@ -66,10 +66,10 @@ class plugin_stripe extends payment_type{
             // Open Checkout with further options
             handler.open({
               name: 'UWCS Pizza',
-              description: '<?="A $size_name $pizza_name"?>',
+              description: '$description',
               zipCode: true,
-              currency: "gbp",
-              amount: <?=$price_stripe?>,
+              currency: 'gbp',
+              amount: $price,
             });
             e.preventDefault();
           });
@@ -90,6 +90,10 @@ class plugin_stripe extends payment_type{
       $name = $guid['name'];
       $order = $guid['order'];
       $price = $guid['price'];
+      
+      if (guid['method'] != $this->name) {
+        return false;
+      }
       
       \Stripe\Stripe::setApiKey($config['api_private' . deployment_name($config)]);
       try {
