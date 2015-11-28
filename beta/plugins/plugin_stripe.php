@@ -1,11 +1,11 @@
 <?
-require payment_type.php
+require_once 'payment_type.php';
 require 'dist/php/stripe-php-3.4.0/init.php';
 
 class plugin_stripe extends payment_type{
 
     function __construct(){
-      init("Card", "", "", "Your payment was declined (you have not been charged). You may have submitted the form twice - check to see if you have a confirmation email. Alternatively try again or use cash.");
+      parent::init("Card", "", "", "Your payment was declined (you have not been charged). You may have submitted the form twice - check to see if you have a confirmation email. Alternatively try again or use cash.");
     }
     
     function deployment_name($config){
@@ -16,9 +16,9 @@ class plugin_stripe extends payment_type{
       }
     }
 
-    function prepayment($price, $name, $description, $config){
-        $key = $config['api_public' . deployment_name($config)];
-        $guid = database::setGuid($name, $order, $price);
+    function prepayment($price, $name, $order, $config){
+        $key = $config['api_public' . $this->deployment_name($config)];
+        $guid = database::setGuid($name, $order, $price, $this->name);
         $payment_name = $this->name;
         
         echo "<script>
@@ -91,11 +91,11 @@ class plugin_stripe extends payment_type{
       $order = $guid['order'];
       $price = $guid['price'];
       
-      if (guid['method'] != $this->name) {
+      if ($guid['method'] != $this->name) {
         return false;
       }
       
-      \Stripe\Stripe::setApiKey($config['api_private' . deployment_name($config)]);
+      \Stripe\Stripe::setApiKey($config['api_private' . $this->deployment_name($config)]);
       try {
         \Stripe\Charge::create(array(
           "amount" => $price,

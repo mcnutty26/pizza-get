@@ -1,16 +1,36 @@
 <?
 require_once 'database.php';
+
 spl_autoload_register(function ($class) {
     include 'plugins/' . $class . '.php';
 });
 
-$config = include('config.php');
-$payment_methods = array(new plugin_stripe());
+$payment_methods = array(new plugin_stripe(), new plugin_cash());
 
 //Redirect the user if they navigated here accidentally or orders are closed
 if (!(isset($_POST['name']) or isset($_POST['token'])) or $config['active'] == false) {
-  header( 'Location: index.php' ) ;
+  header('Location: index.php');
 }
+
+$name = htmlspecialchars($_POST['name']);
+$comments = htmlspecialchars($_POST['comments']);
+$pizza = $_POST['pizza'];
+$crust = $_POST['crust'];
+$size = $_POST['size'];
+
+$size_name = pizza_helper::get_size_name($size);
+$pizza_name = database::getPizzaName($pizza); 
+$pizza_price = pizza_helper::get_pizza_price($pizza, $size_name);
+$crust_name = pizza_helper::get_crust_name($crust, $size);
+$crust_price = pizza_helper::get_crust_price($crust, $size);
+$sides_name = pizza_helper::get_sides_name($_POST);
+$sides_price = pizza_helper::get_sides_price($_POST);
+$toppings_name = pizza_helper::get_toppings_name($_POST, $pizza);
+$toppings_price = pizza_helper::get_toppings_price($_POST, $pizza, $size);
+
+$price = ($pizza_price + $toppings_price)/$config['discount'];
+$price += $price_sides / ($config['discount_sides'] == 1 ? $config['discount'] : 1);
+$order = "A $size_name $pizza_name $toppings_name $sides_name";
 
 if (isset($_POST['name'])) {
 } else {
@@ -46,8 +66,8 @@ if (isset($_POST['name'])) {
     <![endif]-->
     
     <? 
-    foreach ($payment_type as $payment){
-      $payment->calculated_price = $payment->prepayment($price, $name, $description, $config);
+    foreach ($payment_methods as $payment){
+      $payment->calculated_price = $payment->prepayment($price, $name, $order, $config);
     }
     ?>
     
@@ -90,10 +110,10 @@ if (isset($_POST['name'])) {
         
         <div class="row">
           <div class="form-group col-xs-6">
-            <p>Name: <?=htmlspecialchars($name)?></p>
+            <p>Name: <?=$name?></p>
           </div>
           <div class="form-group col-xs-6">
-            <p>Order: <?="$pizza_name$sides"?></p>
+            <p>Order: <?="$order"?></p>
           </div><!-- /btn-group -->
         </div>
         
@@ -108,13 +128,13 @@ if (isset($_POST['name'])) {
         </div> <!-- /row -->
         
         <div class="form-group">
-          <p>Comments: <?=htmlspecialchars($comments)?></p>
+          <p>Comments: <?=$comments?></p>
         </div>
 
         <div class="row">
           <?
-          foreach ($payment_type as $payment){
-            $payment_name = $payment['name'];
+          foreach ($payment_methods as $payment){
+            $payment_name = $payment->name;
             $payment_price = number_format((float)$payment->calculated_price/100, 2, '.', '');
             echo "<div class=\"form-group col-xs-4\">";
             echo "<button class=\"btn btn-primary btn-lg btn-block\" id=\"$payment_name\">Pay by $payment_name £$payment_price</button>";
@@ -131,7 +151,7 @@ if (isset($_POST['name'])) {
       <? } else { ?>
 
         <div class="form-group">
-          <p>Name: <?=htmlspecialchars($name)?></p>
+          <p>Name: <?=htmlspecialchars($_POST['name'])?></p>
         </div>
         
         <div class="form-group">

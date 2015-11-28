@@ -75,7 +75,7 @@ require_once 'database.php';
 
                   <? $result = database::getMenu();
                   foreach ($result as $row) {
-                    echo '<option value="' . $row['id'] . '" >' . $row['pizza'] . ' (£' . number_format((float)$row['large']/$config['discount'], 2, '.', '') . ')</option>';
+                    echo '<option value="' . $row['id'] . '" >' . $row['pizza'] . ' (£' . number_format((float)$row['large']/($config['discount']*100), 2, '.', '') . ')</option>';
                   } ?>
                   <option value="N">No Pizza - Sides Only (£0.00)</option>
                   <option value="H">Half and Half (varies)</option>
@@ -89,8 +89,8 @@ require_once 'database.php';
             <div class="form-group col-xs-4">
               <select class="form-control select select-primary" data-toggle="select" name="size" id="sizeSelect" onchange="processCrust(this);">
                 <option value="1">Large</option>
-                <option value="2">Medium (-£<?=number_format((float)200/$config['discount'], 2, '.', '')?>)</option>
-                <option value="3">Small (-£<?=number_format((float)400/$config['discount'], 2, '.', '')?>)</option>
+                <option value="2">Medium (-£<?=number_format((float)2/$config['discount'], 2, '.', '')?>)</option>
+                <option value="3">Small (-£<?=number_format((float)4/$config['discount'], 2, '.', '')?>)</option>
                 <option value="4">Personal (varies)</option>
               </select>
             </div>
@@ -100,10 +100,10 @@ require_once 'database.php';
                 <option value="a">Normal Crust</option>
                 <option value="b">Italian Crust</option>
                 <option value="c">Thin and Crispy Crust</option>
-                <option value="d">Stuffed Crust (+£<?=number_format((float)250/$config['discount'], 2, '.', '')?>)</option>
-                <option value="e">Hotdog Stuffed Crust (+£<?=number_format((float)250/$config['discount'], 2, '.', '')?>)</option>
-                <option value="g">Hotdog Stuffed Crust with Mustard (+£<?=number_format((float)250/$config['discount'], 2, '.', '')?>)</option>
-                <option value="f">BBQ Stuffed Crust (+£<?=number_format((float)250/$config['discount'], 2, '.', '')?>)</option>
+                <option value="d">Stuffed Crust (+£<?=number_format((float)2.5/$config['discount'], 2, '.', '')?>)</option>
+                <option value="e">Hotdog Stuffed Crust (+£<?=number_format((float)2.5/$config['discount'], 2, '.', '')?>)</option>
+                <option value="g">Hotdog Stuffed Crust with Mustard (+£<?=number_format((float)2.5/$config['discount'], 2, '.', '')?>)</option>
+                <option value="f">BBQ Stuffed Crust (+£<?=number_format((float)2.5/$config['discount'], 2, '.', '')?>)</option>
               </select>
             </div>
             
@@ -123,7 +123,7 @@ require_once 'database.php';
               }
               echo "<div class=\"form-group col-xs-3\">";
               echo "<label class=\"checkbox\" for=\"side" . $row['id'] . "\">";
-              echo "<input type=\"checkbox\" id=\"side" . $row['id'] . "\" name=\"side" . $row['id'] . "\" data-toggle=\"checkbox\">" . $row['name'] . " (£" . number_format((float)$row['price']/( $config['discount_sides'] == 1 ? $config['discount'] : 100), 2, '.', '') . ")</label>";
+              echo "<input type=\"checkbox\" id=\"side" . $row['id'] . "\" name=\"side" . $row['id'] . "\" data-toggle=\"checkbox\">" . $row['name'] . " (£" . number_format((float)$row['price']/( $config['discount_sides'] == 1 ? ($config['discount']*100) : 1), 2, '.', '') . ")</label>";
               echo "</div>";
               if ($count == 3) {
                 echo "</div>";

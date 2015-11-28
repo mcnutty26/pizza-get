@@ -123,7 +123,7 @@ if ($size == "1") {
               <div class="col-xs-3">
                 <label class="checkbox" for="pcheese">
                   <input type="checkbox" id="pcheese" name="pcheese" onchange="processCheese()" data-toggle="checkbox"/>
-                Extra Cheese (£<?=number_format((float)$topping_price/$config['discount'], 2, '.', '')?>)
+                Extra Cheese (£<?=number_format((float)$topping_price/($config['discount']*100), 2, '.', '')?>)
                 </label>
               </div>
             </div>
@@ -146,7 +146,7 @@ if ($size == "1") {
                 }
                 echo "<div class=\"form-group col-xs-3\">";
                 echo "<label class=\"checkbox\" for=\"topping" . $row['id'] . "\">";
-                echo "<input type=\"checkbox\" id=\"topping" . $row['id'] . "\" name=\"topping" . $row['id'] . "\" data-toggle=\"checkbox\"" . $checked . ">" . $row['name'] . " (£" . number_format((float)$topping_price/$config['discount'], 2, '.', '') . ")</label>";
+                echo "<input type=\"checkbox\" id=\"topping" . $row['id'] . "\" name=\"topping" . $row['id'] . "\" data-toggle=\"checkbox\"" . $checked . ">" . $row['name'] . " (£" . number_format((float)$topping_price/($config['discount']*100), 2, '.', '') . ")</label>";
                 echo "</div>";
                 if ($count == 3) {
                   echo "</div>";
@@ -163,7 +163,7 @@ if ($size == "1") {
           </div>
           <div class="row">
             <div class="form-group col-xs-12">
-              <button class="btn btn-primary btn-lg btn-block">Go to Payment</button>
+              <button type="submit" class="btn btn-primary btn-lg btn-block">Go to Payment</button>
             </div>
           </div>
         </div>

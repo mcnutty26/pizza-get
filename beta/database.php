@@ -8,7 +8,7 @@ define ('DBNAME', $config['dbname']);
 //Load in variables we want to expose to pages and plugins
 $config['active'] = database::getActive();
 $config['live'] = database::getLive();
-$config['discount'] = database::getDiscount() * 100;
+$config['discount'] = database::getDiscount();
 $config['discount_sides'] = database::getDiscountSides();
 
 
@@ -116,6 +116,11 @@ class database {
       return $result;
     }
     
+    static function getIngredientCount($pizza)
+    {
+      return database::singleArgQuery("SELECT count(id) FROM `mcnutty`.`hir2_ingredients` WHERE `pizza` = :arg", $pizza)[0]['count(id)'];
+    }
+    
     static function setDiscount($val)
     {
       return database::singleArgQuery("UPDATE `mcnutty`.`hir2_events` SET `discount`=:arg;", $val);
@@ -182,10 +187,10 @@ class database {
       return false;
     }
 
-    static function setGuid($name, $order, $price, method)
+    static function setGuid($name, $order, $price, $method)
     {
       $guid = uniqid();
-      $stmt = database::getDbh()->prepare("INSERT INTO  `mcnutty`.`hir2_sessions` (`id` ,`guid`, `name`, `order` ,`price`, `method`) VALUES (NULL ,  :guid, :name, :order, :price, :method);");
+      $stmt = database::getDbh()->prepare("INSERT INTO `mcnutty`.`hir2_sessions` (`id` ,`guid`, `name`, `order` ,`price`, `method`) VALUES (NULL, :guid, :name, :order, :price, :method);");
       $stmt->bindParam(':guid', $guid);
       $stmt->bindParam(':name', $name);
       $stmt->bindParam(':order', $order);
@@ -194,6 +199,7 @@ class database {
       if ($stmt->execute()) {
         return $guid;
       }
+      print_r($stmt->errorInfo());
       return false;
     }
 }

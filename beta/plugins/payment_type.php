@@ -1,5 +1,5 @@
 <?
-abstract class payment {
+abstract class payment_type {
 
     public $name;
     public $token_type;
@@ -7,7 +7,7 @@ abstract class payment {
     public $payment_reject;
     public $calculated_price;
 
-    abstract function __construct() {}
+    abstract function __construct();
 
     final function init($name, $token_type, $payment_accept, $payment_reject){
         $this->name = $name;
@@ -28,11 +28,11 @@ abstract class payment {
         return $this->payment_accept;
     }
 
-    final funtion get_payment_reject(){
+    final function get_payment_reject(){
         return $this->payment_reject;
     }
 
-    abstract function prepayment($price, $name, $description, $config);
+    abstract function prepayment($price, $name, $order, $config);
     abstract function postpayment($config, $token);
 }
 ?>
