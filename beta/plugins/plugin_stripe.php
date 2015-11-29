@@ -115,5 +115,10 @@ class plugin_stripe extends payment_type{
       }
       return true;
     }
+    
+    function button(){
+      $price = $this->calculated_price;
+      return "<button class=\"btn btn-primary btn-lg btn-block\" id=\"customButton\">Pay by card £$price</button>";
+    }
 }
 ?>

@@ -173,4 +173,13 @@ class pizza_helper{
       
     return $price;
   }
+  
+  static function get_sauce_name($post){
+    if ($post['sauce'] == "on") {
+      return "Tomato Sauce";
+    } else if ($post['bsauce'] == "on") {
+      return "BBQ Sauce";
+    }
+    return "No Sauce";
+  }
 }

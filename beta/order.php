@@ -27,10 +27,11 @@ $sides_name = pizza_helper::get_sides_name($_POST);
 $sides_price = pizza_helper::get_sides_price($_POST);
 $toppings_name = pizza_helper::get_toppings_name($_POST, $pizza);
 $toppings_price = pizza_helper::get_toppings_price($_POST, $pizza, $size);
+$sauce_name = pizza_helper::get_sauce_name($_POST);
 
 $price = ($pizza_price + $toppings_price)/$config['discount'];
 $price += $price_sides / ($config['discount_sides'] == 1 ? $config['discount'] : 1);
-$order = "A $size_name $pizza_name $toppings_name $sides_name";
+$order = "A $size_name $pizza_name ($sauce_name) $toppings_name $sides_name";
 
 if (isset($_POST['name'])) {
 } else {
@@ -134,10 +135,8 @@ if (isset($_POST['name'])) {
         <div class="row">
           <?
           foreach ($payment_methods as $payment){
-            $payment_name = $payment->name;
-            $payment_price = number_format((float)$payment->calculated_price/100, 2, '.', '');
             echo "<div class=\"form-group col-xs-4\">";
-            echo "<button class=\"btn btn-primary btn-lg btn-block\" id=\"$payment_name\">Pay by $payment_name £$payment_price</button>";
+            echo $payment->button();
             echo "</div>";
           }
           ?>

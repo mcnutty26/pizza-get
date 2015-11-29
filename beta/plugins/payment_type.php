@@ -34,5 +34,6 @@ abstract class payment_type {
 
     abstract function prepayment($price, $name, $order, $config);
     abstract function postpayment($config, $token);
+    abstract function button();
 }
 ?>
