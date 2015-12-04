@@ -30,11 +30,13 @@ class plugin_cash extends payment_type{
   }
   
   function button(){
-    $price = $this->calculated_price;
-    return <<<EOT
-    <input type="hidden" name="token" value="cash">
-    <input type="hidden" name="guid" value="">
-    <input class="btn btn-primary btn-lg btn-block" type="submit" value="Pay by cash £$price">
+    $price = number_format((float)$this->calculated_price/100, 2, '.', '');
+    $button = <<<EOT
+        <input type="hidden" name="token" value="cash">
+        <input type="hidden" name="guid" value="">
+        <input class="btn btn-primary btn-lg btn-block" type="submit" value="Pay by cash £$price">
+EOT;
+    return $button;
   }
 }
 ?>

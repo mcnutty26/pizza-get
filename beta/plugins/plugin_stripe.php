@@ -22,6 +22,11 @@ class plugin_stripe extends payment_type{
         $payment_name = $this->name;
         
         echo "<script>
+
+        if (document.addEventListener) {
+          document.addEventListener(\"DOMContentLoaded\", init, false);
+        }
+
         function init() {
           var handler = StripeCheckout.configure({
             key: '$key',
@@ -117,7 +122,7 @@ class plugin_stripe extends payment_type{
     }
     
     function button(){
-      $price = $this->calculated_price;
+      $price = number_format((float)$this->calculated_price/100, 2, '.', '');
       return "<button class=\"btn btn-primary btn-lg btn-block\" id=\"customButton\">Pay by card £$price</button>";
     }
 }

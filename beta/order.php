@@ -73,7 +73,7 @@ if (isset($_POST['name'])) {
     ?>
     
   </head>
-  <body onload="init()">
+  <body>
   <? if ($config['live'] == 0) { ?>
   <footer>
     <div class="container">
