@@ -1,3 +1,6 @@
+<!--This software is licensed under the GNU GPL v3 -->
+<!--Written by William Seymour-->
+
 <?
 require_once 'database.php'; 
 ?>
@@ -277,10 +280,6 @@ require_once 'database.php';
         $('#submitForm').html('Customise Your Pizza');
       }
     }
-    </script>
-    
-    <script>
-      videojs.options.flash.swf = "dist/js/vendors/video-js.swf"
     </script>
   </body>
 </html>

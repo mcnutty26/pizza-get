@@ -1,3 +1,6 @@
+<!--This software is licensed under the GNU GPL v3 -->
+<!--Written by William Seymour-->
+
 <?
 require_once 'database.php'; 
 
@@ -185,41 +188,19 @@ if ($size == "1") {
     <script src="docs/assets/js/application.js"></script>
 
     <script>
-  $.urlParam = function(name){
-    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-    if (results==null){
-       return null;
-    }
-    else{
-       return results[1] || 0;
-    }
-  }
-  
-  function init() {
-    if ($.urlParam('mode') == 'H') {
-      //$('#byo').hide();
-    } else {
-      //$('#hnh').hide();  
-    }
-  }
-  
-  function processSauce(arg) {
-    if ($("#sauce").prop("checked") && $("#bsauce").prop("checked")) {
-      if (arg == 0) {
-        $("#bsauce").prop("checked", false);
-      } else {
-        $("#sauce").prop("checked", false);
+    function processSauce(arg) {
+      if ($("#sauce").prop("checked") && $("#bsauce").prop("checked")) {
+        if (arg == 0) {
+          $("#bsauce").prop("checked", false);
+        } else {
+          $("#sauce").prop("checked", false);
+        }
       }
     }
-  }
   
-  function processCheese() {
+    function processCheese() {
       $("#cheese").prop("checked", true);
-  }
-  </script>
-    
-    <script>
-      videojs.options.flash.swf = "dist/js/vendors/video-js.swf"
+    }
     </script>
   </body>
 </html>

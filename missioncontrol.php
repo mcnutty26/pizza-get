@@ -1,3 +1,6 @@
+<!--This software is licensed under the GNU GPL v3 -->
+<!--Written by William Seymour-->
+
 <?
 $config = include('config.php');
 

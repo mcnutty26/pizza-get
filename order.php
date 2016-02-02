@@ -1,3 +1,6 @@
+<!--This software is licensed under the GNU GPL v3 -->
+<!--Written by William Seymour-->
+
 <?
 require_once 'database.php';
 require_once 'dist/php/stripe-php-3.4.0/init.php';
