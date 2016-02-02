@@ -1,31 +1,29 @@
 <?
 require_once 'database.php'; 
-$config = include('config.php');
-
-$active = database::getActive();
 
 //Redirect the user if the navigated here accidentally
-if ($active != 1 or !isset($_POST['pizza']) or !isset($_POST['crust']) or !isset($_POST['size']) or !isset($_POST['name'])) {
+if ($config['active'] != 1 or !isset($_POST['pizza']) or !isset($_POST['crust']) or !isset($_POST['size']) or !isset($_POST['name'])) {
   header( 'Location: index.php' ) ;
 }
 
-$discount = database::getDiscount() * 100;
-$isLive = database::getLive();
-
 //Load and correctly display the base price of the pizza
 $size = $_POST['size'];
-$base = database::getPizza($config['basic_pizza']);
+$pizza = database::getPizza($_POST['pizza']);
+if ($_POST['pizza'] == "B") {
+  $pizza['pizza'] = "Build Your Own";
+}
+
 if ($size == "1") {
-  $price = $base['large'];
+  $price = $pizza['large'];
   $topping_price = 130;
 } else if ($size == "2") {
-  $price = $base['medium'];
+  $price = $pizza['medium'];
   $topping_price = 120;
 } else if ($size == "3") {
-  $price = $base['small'];
+  $price = $pizza['small'];
   $topping_price = 100;
 } else if ($size == "4") {
-  $price = $base['personal'];
+  $price = $pizza['personal'];
   $topping_price = 80;
 } else {
   //Redirect on impossible pizza size
@@ -59,7 +57,7 @@ if ($size == "1") {
     <![endif]-->
   </head>
   <body onload="init()">
-  <? if ($isLive == 0 and $active == 1) { ?>
+  <? if ($config['live'] == 0 and $config['active'] == 1) { ?>
   <footer>
     <div class="container">
       <p>TEST MODE</p>
@@ -100,46 +98,9 @@ if ($size == "1") {
         </div> <!-- /row -->
         
         <div class="login-form">
-          <div id="hnh">
-              <div class="row">
-                <div class="col-xs-6">
-                  Left Half
-                </div>
-                <div class="col-xs-6">
-                  Right Half
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-xs-6">
-                  <div class="form-group">
-                    <select class="form-control select select-primary" data-toggle="select" name="pizzaA">
-                      <? $result = database::getMenu();
-                      foreach ($result as $row) {
-                        if ($row['large'] != 0) {
-                          echo '<option value="' . $row['id'] . '" >' . $row['pizza'] . '</option>';
-                        }
-                      } ?>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-xs-6">
-                  <div class="form-group">
-                    <select class="form-control select select-primary" data-toggle="select" name="pizzaB">
-
-                      <? $result = database::getMenu();
-                      foreach ($result as $row) {
-                        if ($row['large'] != 0) {
-                          echo '<option value="' . $row['id'] . '" >' . $row['pizza'] . '</option>';
-                        }
-                      } ?>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </form>
-          </div>
+          <h4><?=$pizza['pizza']?></h4>
           <div id="byo">
-            Pizza Base (£<?=number_format((float)$price/$discount, 2, '.', '')?>):
+            Pizza Base:
             <div class="form-group row">
               <div class="col-xs-3">
                 <label class="checkbox" for="sauce">
@@ -159,19 +120,33 @@ if ($size == "1") {
                 Mozzarella Cheese
                 </label>
               </div>
+              <div class="col-xs-3">
+                <label class="checkbox" for="pcheese">
+                  <input type="checkbox" id="pcheese" name="pcheese" onchange="processCheese()" data-toggle="checkbox"/>
+                Extra Cheese (£<?=number_format((float)$topping_price/($config['discount']*100), 2, '.', '')?>)
+                </label>
+              </div>
             </div>
             Choose your toppings:
             <div class="form-group">
-              <? $result = database::getToppings();
+              <?
               $count = 0;
               $total = 0;
-              foreach ($result as $row) {
+              foreach (database::getToppings() as $row) {
+                
+                $checked = "";
+                foreach (database::getIngredients($pizza['id']) as $ingredients) {
+                  if ($ingredients['topping'] == $row['id']) {
+                    $checked = "checked=\"checked\"";
+                  }
+                }
+                
                 if ($count == 0) {
                   echo "<div class=\"row\">";
                 }
                 echo "<div class=\"form-group col-xs-3\">";
                 echo "<label class=\"checkbox\" for=\"topping" . $row['id'] . "\">";
-                echo "<input type=\"checkbox\" id=\"topping" . $row['id'] . "\" name=\"topping" . $row['id'] . "\" data-toggle=\"checkbox\">" . $row['name'] . " (£" . number_format((float)$topping_price/$discount, 2, '.', '') . ")</label>";
+                echo "<input type=\"checkbox\" id=\"topping" . $row['id'] . "\" name=\"topping" . $row['id'] . "\" data-toggle=\"checkbox\"" . $checked . ">" . $row['name'] . " (£" . number_format((float)$topping_price/($config['discount']*100), 2, '.', '') . ")</label>";
                 echo "</div>";
                 if ($count == 3) {
                   echo "</div>";
@@ -188,7 +163,7 @@ if ($size == "1") {
           </div>
           <div class="row">
             <div class="form-group col-xs-12">
-              <button class="btn btn-primary btn-lg btn-block">Go to Payment</button>
+              <button type="submit" class="btn btn-primary btn-lg btn-block">Go to Payment</button>
             </div>
           </div>
         </div>
@@ -196,7 +171,7 @@ if ($size == "1") {
       </form>
     </div> <!-- /container -->
     
-    <? if ($isLive == 0 and $active == 1) { ?>
+    <? if ($config['live'] == 0 and $config['active'] == 1) { ?>
     <footer>
       <div class="container">
         <p>TEST MODE</p>
@@ -222,9 +197,9 @@ if ($size == "1") {
   
   function init() {
     if ($.urlParam('mode') == 'H') {
-      $('#byo').hide();
+      //$('#byo').hide();
     } else {
-      $('#hnh').hide();  
+      //$('#hnh').hide();  
     }
   }
   
@@ -236,6 +211,10 @@ if ($size == "1") {
         $("#sauce").prop("checked", false);
       }
     }
+  }
+  
+  function processCheese() {
+      $("#cheese").prop("checked", true);
   }
   </script>
     

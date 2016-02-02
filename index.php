@@ -1,10 +1,5 @@
 <?
 require_once 'database.php'; 
-
-$active = database::getActive();
-$discount = database::getDiscount() * 100;
-$discount_sides = database::getDiscountSides();
-$isLive = database::getLive()
 ?>
 
 <!DOCTYPE html>
@@ -33,7 +28,7 @@ $isLive = database::getLive()
     <![endif]-->
   </head>
   <body onload="init()">
-  <? if ($isLive == 0 and $active == 1) { ?>
+  <? if ($config['live'] == 0 and $config['active'] == 1) { ?>
   <footer>
     <div class="container">
       <p>TEST MODE</p>
@@ -45,9 +40,6 @@ $isLive = database::getLive()
         <div class="col-xs-12">
           <nav class="navbar navbar-inverse navbar-embossed" role="navigation">
             <div class="navbar-header">
-              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
-                <span class="sr-only">Toggle navigation</span>
-              </button>
               <a class="navbar-brand" href="index.php">pizza-get</a>
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse-01">
@@ -64,13 +56,13 @@ $isLive = database::getLive()
       <div class="demo-type-example">
         <h3><?=$config['front_string']?></h3>
       </div>
-      <? if ($active == 1) { ?>
+      <? if ($config['active'] == 1) { ?>
       <div class="login-form">
-        <form action="order.php" method="post" id="orderForm" onsubmit="return validateCrust()">
+        <form action="custom.php" method="post" id="orderForm" onsubmit="return validateCrust()">
           <div class="row">
             <div class="alert alert-danger" id="size-error">
               Whoops! You can't have those options with that size pizza :(
-            </div>
+            </div> 
             <div class="col-xs-6">
               <div class="form-group" id="nameField">
                 <input type="text" class="form-control " placeholder="Enter your name" id="login-name" name="name" onfocus="resetName()"/>
@@ -83,8 +75,9 @@ $isLive = database::getLive()
 
                   <? $result = database::getMenu();
                   foreach ($result as $row) {
-                    echo '<option value="' . $row['id'] . '" >' . $row['pizza'] . ' (£' . number_format((float)$row['large']/$discount, 2, '.', '') . ')</option>';
+                    echo '<option value="' . $row['id'] . '" >' . $row['pizza'] . ' (£' . number_format((float)$row['large']/($config['discount']*100), 2, '.', '') . ')</option>';
                   } ?>
+                  <option value="N">No Pizza - Sides Only (£0.00)</option>
                   <option value="H">Half and Half (varies)</option>
                   <option value="B">Build your Own (varies)</option>
                 </select>
@@ -96,8 +89,8 @@ $isLive = database::getLive()
             <div class="form-group col-xs-4">
               <select class="form-control select select-primary" data-toggle="select" name="size" id="sizeSelect" onchange="processCrust(this);">
                 <option value="1">Large</option>
-                <option value="2">Medium (-£<?=number_format((float)200/$discount, 2, '.', '')?>)</option>
-                <option value="3">Small (-£<?=number_format((float)400/$discount, 2, '.', '')?>)</option>
+                <option value="2">Medium (-£<?=number_format((float)2/$config['discount'], 2, '.', '')?>)</option>
+                <option value="3">Small (-£<?=number_format((float)4/$config['discount'], 2, '.', '')?>)</option>
                 <option value="4">Personal (varies)</option>
               </select>
             </div>
@@ -107,10 +100,10 @@ $isLive = database::getLive()
                 <option value="a">Normal Crust</option>
                 <option value="b">Italian Crust</option>
                 <option value="c">Thin and Crispy Crust</option>
-                <option value="d">Stuffed Crust (+£<?=number_format((float)250/$discount, 2, '.', '')?>)</option>
-                <option value="e">Hotdog Stuffed Crust (+£<?=number_format((float)250/$discount, 2, '.', '')?>)</option>
-                <option value="g">Hotdog Stuffed Crust with Mustard (+£<?=number_format((float)250/$discount, 2, '.', '')?>)</option>
-                <option value="f">BBQ Stuffed Crust (+£<?=number_format((float)250/$discount, 2, '.', '')?>)</option>
+                <option value="d">Stuffed Crust (+£<?=number_format((float)2.5/$config['discount'], 2, '.', '')?>)</option>
+                <option value="e">Hotdog Stuffed Crust (+£<?=number_format((float)2.5/$config['discount'], 2, '.', '')?>)</option>
+                <option value="g">Hotdog Stuffed Crust with Mustard (+£<?=number_format((float)2.5/$config['discount'], 2, '.', '')?>)</option>
+                <option value="f">BBQ Stuffed Crust (+£<?=number_format((float)2.5/$config['discount'], 2, '.', '')?>)</option>
               </select>
             </div>
             
@@ -130,7 +123,7 @@ $isLive = database::getLive()
               }
               echo "<div class=\"form-group col-xs-3\">";
               echo "<label class=\"checkbox\" for=\"side" . $row['id'] . "\">";
-              echo "<input type=\"checkbox\" id=\"side" . $row['id'] . "\" name=\"side" . $row['id'] . "\" data-toggle=\"checkbox\">" . $row['name'] . " (£" . number_format((float)$row['price']/( $discount_sides == 1 ? $discount : 100), 2, '.', '') . ")</label>";
+              echo "<input type=\"checkbox\" id=\"side" . $row['id'] . "\" name=\"side" . $row['id'] . "\" data-toggle=\"checkbox\">" . $row['name'] . " (£" . number_format((float)$row['price']/( $config['discount_sides'] == 1 ? ($config['discount']*100) : 1), 2, '.', '') . ")</label>";
               echo "</div>";
               if ($count == 3) {
                 echo "</div>";
@@ -150,7 +143,7 @@ $isLive = database::getLive()
             <label class="login-field-icon fui-chat" for="comments"></label>
           </div>
 
-          <a class="btn btn-primary btn-lg btn-block" id="submitForm" href="#" onclick="validateCrust()">Go to Payment</a>
+          <a class="btn btn-primary btn-lg btn-block" id="submitForm" href="#" onclick="validateCrust()">Customise Your Pizza</a>
         </form>
       </div>
       <? } else { ?>
@@ -158,7 +151,7 @@ $isLive = database::getLive()
       <? } ?>
     </div> <!-- /container -->
     
-    <? if ($isLive == 0 and $active == 1) { ?>
+    <? if ($config['live'] == 0 and $config['active'] == 1) { ?>
     <footer>
       <div class="container">
         <p>TEST MODE</p>
@@ -263,23 +256,25 @@ $isLive = database::getLive()
       if (arg.value == "H") {
         $('#crustSelect').removeAttr("disabled");
         $('#sizeSelect').removeAttr("disabled");
-        $('#orderForm').attr('action', 'custom.php?mode=H');
+        $('#orderForm').attr('action', 'half.php');
         $('#submitForm').html('Customise Your Pizza');
         $("option[value='4']").attr('disabled', 'disabled');
       } else if (arg.value == "B") {
         $('#crustSelect').removeAttr("disabled");
         $('#sizeSelect').removeAttr("disabled");
-        $('#orderForm').attr('action', 'custom.php?mode=B');
+        $('#orderForm').attr('action', 'custom.php');
         $('#submitForm').html('Customise Your Pizza');
         $("option[value='4']").removeAttr('disabled');
-      } else if (arg.value == "<?=$config['empty_pizza']?>") {
+      } else if (arg.value == "N") {
         $('#crustSelect').attr("disabled", "disabled");
         $('#sizeSelect').attr("disabled", "disabled");
+        $('#orderForm').attr('action', 'order.php');
+        $('#submitForm').html('Go to Payment');
       } else {
         $('#crustSelect').removeAttr("disabled");
         $('#sizeSelect').removeAttr("disabled");
-        $('#orderForm').attr('action', 'order.php');
-        $('#submitForm').html('Go to Payment');
+        $('#orderForm').attr('action', 'custom.php');
+        $('#submitForm').html('Customise Your Pizza');
       }
     }
     </script>
