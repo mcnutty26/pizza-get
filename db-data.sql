@@ -50,12 +50,16 @@ INSERT INTO `hir2_sides` (`id`, `name`, `price`) VALUES
 (31, 'Monster Energy (500ml)', 159),
 (32, 'Dr Pepper (500ml)', 125),
 (33, 'Coca Cola (500ml)', 125),
-(34, 'Diet Coca Cola (500ml)', 125),
-(35, 'Coke Zero (500ml)', 125),
-(36, 'Fanta (500ml)', 125),
-(37, 'Sprite (500ml)', 125);
-(38, 'Oasis Summer Fruits (500ml)', 125),
-(39, 'Oasis Citrus Punch (500ml)', 125),
+(34, 'Coca Cola (1.25l)', 125),
+(35, 'Diet Coca Cola (500ml)', 125),
+(36, 'Diet Coca Cola (1.25l)', 125),
+(37, 'Coke Zero (500ml)', 125),
+(38, 'Coke Zero (1.25l)', 125),
+(39, 'Fanta (500ml)', 125),
+(40, 'Fanta (1.25l)', 125),
+(41, 'Sprite (500ml)', 125);
+(42, 'Oasis Summer Fruits (500ml)', 125),
+(43, 'Oasis Citrus Punch (500ml)', 125),
 
 INSERT INTO `hir2_toppings` (`id`, `name`) VALUES
 (1, 'Anchovies'),
