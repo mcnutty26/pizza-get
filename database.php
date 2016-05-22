@@ -76,6 +76,16 @@ class database {
     {
       return database::simpleQuery("SELECT * FROM hir2_orders");
     }
+	
+	static function getTotalOrders()
+    {
+      return database::simpleQuery("SELECT COUNT(price) as o FROM hir2_log")[0]['o'];
+    }
+	
+	static function getTotalPrice()
+    {
+      return database::simpleQuery("SELECT SUM(price) as p FROM hir2_log")[0]['p'];
+    }
     
     static function clearGuid()
     {

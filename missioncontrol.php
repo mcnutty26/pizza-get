@@ -107,7 +107,7 @@ if ($_SESSION['login'] == $config['cp_guid']) {
             <div class="collapse navbar-collapse" id="navbar-collapse-01">
               <ul class="nav navbar-nav navbar-left">
                 <li><a href="index.php">Order</a></li>
-                <li><a href="about.html">About</a></li>
+                <li><a href="about.php">About</a></li>
                 <li><a href="https://www.dominos.co.uk/store" target="_blank">Dominos Menu</a></li>
                </ul>
             </div><!-- /.navbar-collapse -->
