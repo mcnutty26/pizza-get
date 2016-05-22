@@ -1,29 +1,16 @@
 # pizza-get
-Pizza ordering system for UWCS, available at https://pizza.uwcs.co.uk
+Pizza ordering system for UWCS, hosted at https://pizza.uwcs.co.uk
 
-Collects pizza choices and can process payments by card. Interface is done in flatui. All payments are handled by Stripe so that we don't have to deal with sensitive information :)
+## Description
+pizza-get soves the problem of ordering pizza for large numbers of people by allowing them to submit orders to a central location. It accepts and processes card payments to avoid the age-old hunt for change and the subsequent trip to the cash machine in the rain. All orders go to a control panel, where order makers can mark them as paid (for cash transactions) and then entered into the website basket.
 
-v1.0 features (internal release):
-* Support for Dominoes pizzas and crust selections
-* Support for payments by card and by cash
-* Admin interface for order management
+## Technologies
+The interface is done in flatui. All payments are handled by Stripe, so the application doesn't actually have to handle and store sensitive information. There is a fee associated with stripe payments which is factored into the cost of paying by card.
 
-v1.1 features (internal release):
-* Added ability to change between live and test API keys on the control panel
-* Added extra discount options, including pizza only discounts
-* Added support for ordering sides
-* Changed database.php interactions to use prepared statements
-* Tidied up the conrol panel with a running total and breaks every £250 (web order limit)
-* Support for half and half pizzas
-* Support for choose your own pizzas
+## Releases
+* v1 (released 29/10/2015)
+* v2 (released 22/05/2016)
 
-v1.2 features (released 29/10/2015):
-* Added support for personal pizzas
-* Added ability to mark orders as entered into the Dominoes website
-* Modified control panel forms to use Ajax
-* Moved hard coded values over to the config file
-
-v1.3 features (pending):
-* Make it more obvious that payments were accepted/declined
-* Add support for drinks and ice creams
-* Added logging feature for orders
+## Licenses
+* pizza-get is licensed under the GNU GPL v3
+* [Flat-UI](https://github.com/designmodo/Flat-UI) is licensed under the Creative Commons Attribution 3.0 Unported license (CC BY 3.0)
