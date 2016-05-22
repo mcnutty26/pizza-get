@@ -52,6 +52,10 @@ if ($_SESSION['login'] == $config['cp_guid']) {
     database::deleteOrder($_POST['del']);
   }
   
+  if (isset($_POST['time'])) {
+    database::setTime($_POST['time']);
+  }
+  
   if ($_POST['clear'] == 1) {
     database::clearOrders();
   }
@@ -64,6 +68,7 @@ if ($_SESSION['login'] == $config['cp_guid']) {
   $deployment = database::getLive();
   $deployment_name = ($deployment == 0 ? "LIVE" : "TEST");
   $deployment_bit = ($deployment == 0 ? "1" : "0");
+  $deadline = database::getDeadline();
   
 }
 ?>
@@ -93,7 +98,7 @@ if ($_SESSION['login'] == $config['cp_guid']) {
       <script src="dist/js/vendor/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body onload="init()>
+  <body onload="init()">
     <div class="container">
       <div class="row demo-row">
         <div class="col-xs-12">
@@ -120,22 +125,22 @@ if ($_SESSION['login'] == $config['cp_guid']) {
       </div>
       <div class="login-form">
         <? if ($_SESSION['login'] == $config['cp_guid']) { ?>
-        
-        <div class="form-group col-xs-4">
-          <form method="post" action="missioncontrol.php" id="disFrm">
-            <select class="form-control select select-primary" data-toggle="select" name="discount" onchange="processDiscount()">
-              <option value="P2" <? if ($discount == 2 and $discount_sides == 0) {echo "selected";} ?>>50% Discount (pizza only)</option>
-              <option value="S2" <? if ($discount == 2  and $discount_sides == 1) {echo "selected";} ?>>50% Discount</option>
-              <option value="P1.67" <? if ($discount == 1.67  and $discount_sides == 0) {echo "selected";} ?>>40% Discount (pizza only)</option>
-              <option value="S1.67" <? if ($discount == 1.67  and $discount_sides == 1) {echo "selected";} ?>>40% Discount</option>
-              <option value="P1.50" <? if ($discount == 1.50  and $discount_sides == 0) {echo "selected";} ?>>33% Discount (pizza only)</option>
-              <option value="S1.50" <? if ($discount == 1.50  and $discount_sides == 1) {echo "selected";} ?>>33% Discount</option>
-              <option value="P1.43" <? if ($discount == 1.43  and $discount_sides == 0) {echo "selected";} ?>>30% Discount (pizza only)</option>
-              <option value="S1.43" <? if ($discount == 1.43  and $discount_sides == 1) {echo "selected";} ?>>30% Discount</option>
-              <option value="S1" <? if ($discount == 1) {echo "selected";} ?>>0% Discount</option>
-            </select>
-          </form>
-        </div>
+        <div class="row">
+          <div class="form-group col-xs-4">
+            <form method="post" action="missioncontrol.php" id="disFrm">
+              <select class="form-control select select-primary" data-toggle="select" name="discount" onchange="processDiscount()">
+                <option value="P2" <? if ($discount == 2 and $discount_sides == 0) {echo "selected";} ?>>50% Discount (pizza only)</option>
+                <option value="S2" <? if ($discount == 2  and $discount_sides == 1) {echo "selected";} ?>>50% Discount</option>
+                <option value="P1.67" <? if ($discount == 1.67  and $discount_sides == 0) {echo "selected";} ?>>40% Discount (pizza only)</option>
+                <option value="S1.67" <? if ($discount == 1.67  and $discount_sides == 1) {echo "selected";} ?>>40% Discount</option>
+                <option value="P1.50" <? if ($discount == 1.50  and $discount_sides == 0) {echo "selected";} ?>>33% Discount (pizza only)</option>
+                <option value="S1.50" <? if ($discount == 1.50  and $discount_sides == 1) {echo "selected";} ?>>33% Discount</option>
+                <option value="P1.43" <? if ($discount == 1.43  and $discount_sides == 0) {echo "selected";} ?>>30% Discount (pizza only)</option>
+                <option value="S1.43" <? if ($discount == 1.43  and $discount_sides == 1) {echo "selected";} ?>>30% Discount</option>
+                <option value="S1" <? if ($discount == 1) {echo "selected";} ?>>0% Discount</option>
+              </select>
+            </form>
+          </div>
         
         <div class="form-group col-xs-4">
           <form method="post" action="missioncontrol.php" id="actFrm">
@@ -144,10 +149,26 @@ if ($_SESSION['login'] == $config['cp_guid']) {
           </form>
         </div>
         
-        <div class="form-group col-xs-4">
-          <form method="post" action="missioncontrol.php" id="dplyFrm">
-            <input type="hidden" name="deployment" value="<?=$deployment_bit?>">
-            <a href="#" class="btn btn-block btn-lg btn-primary" onclick="processDeploy()">Set mode to <?= $deployment_name?></a>
+          <div class="form-group col-xs-4">
+            <form method="post" action="missioncontrol.php" id="dplyFrm">
+              <input type="hidden" name="deployment" value="<?=$deployment_bit?>">
+              <a href="#" class="btn btn-block btn-lg btn-primary" onclick="processDeploy()">Set mode to <?= $deployment_name?></a>
+            </form>
+          </div>
+        </div>
+
+        <div class="row">
+          <form method="post" action="missioncontrol.php" id="countFrm">
+            <div class="col-xs-4">
+              <div class="form-group">
+                <input type="text" class="form-control" name="time" value="<?=$deadline?>"/>
+              </div>
+            </div>
+            <div class="col-xs-4">
+              <div class="form-group">
+                <input type="submit" class="btn btn-primary btn-lg btn-block" value="Start the clock!">
+              </div>
+            </div>
           </form>
         </div>
         
@@ -264,12 +285,7 @@ if ($_SESSION['login'] == $config['cp_guid']) {
     </div> <!-- /container -->
 
     <script src="dist/js/vendor/jquery.min.js"></script>
-    <script src="dist/js/vendor/video.js"></script>
     <script src="dist/js/flat-ui.min.js"></script>
     <script src="docs/assets/js/application.js"></script>
-
-    <script>
-      videojs.options.flash.swf = "dist/js/vendors/video-js.swf"
-    </script>
   </body>
 </html>

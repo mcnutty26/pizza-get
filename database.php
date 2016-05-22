@@ -76,6 +76,11 @@ class database {
     {
       return database::simpleQuery("SELECT * FROM hir2_orders");
     }
+    
+    static function getDeadline()
+    {
+      return database::simpleQuery("SELECT deadline FROM hir2_events")[0]['deadline'];
+    }
 	
 	static function getTotalOrders()
     {
@@ -115,6 +120,11 @@ class database {
     static function setDiscount($val)
     {
       return database::singleArgQuery("UPDATE `mcnutty`.`hir2_events` SET `discount`=:arg;", $val);
+    }
+    
+    static function setTime($val)
+    {
+      return database::singleArgQuery("UPDATE `mcnutty`.`hir2_events` SET `deadline`=:arg;", $val);
     }
     
     static function setDiscountSides($val)

@@ -4,7 +4,8 @@ require_once 'database.php';
 $active = database::getActive();
 $discount = database::getDiscount() * 100;
 $discount_sides = database::getDiscountSides();
-$isLive = database::getLive()
+$isLive = database::getLive();
+$deadline = database::getDeadline();
 ?>
 
 <!DOCTYPE html>
@@ -62,7 +63,7 @@ $isLive = database::getLive()
       </div> <!-- /row -->
       
       <div class="demo-type-example">
-        <h3><?=$config['front_string']?></h3>
+        <h3><?=($active == 1 ? "Order closes in <span id=\"countdown\"/>" : "Welcome to pizza-get")?></h3>
       </div>
       <? if ($active == 1) { ?>
       <div class="login-form">
@@ -247,6 +248,16 @@ $isLive = database::getLive()
     function init() {
       $('#sides').hide();
       $('#size-error').hide();
+      var clock = getTimeRemaining('<?=$deadline?>');
+      if(clock.total>0){
+      document.getElementById('countdown').innerHTML = 
+                      clock.hours + 'h ' +
+                      clock.minutes + 'm ' +
+                      clock.seconds + 's ';    
+      } else {
+        document.getElementById('countdown').innerHTML = '0h 0m 0s';
+      }
+      initializeClock('countdown', '<?=$deadline?>');
     }
     
     function processSides() {
@@ -282,10 +293,36 @@ $isLive = database::getLive()
         $('#submitForm').html('Go to Payment');
       }
     }
-    </script>
     
-    <script>
-      videojs.options.flash.swf = "dist/js/vendors/video-js.swf"
+    function getTimeRemaining(endtime){
+      var t = Date.parse(endtime) - Date.parse(new Date());
+      var seconds = Math.floor( (t/1000) % 60 );
+      var minutes = Math.floor( (t/1000/60) % 60 );
+      var hours = Math.floor( (t/(1000*60*60)) % 24 );
+      var days = Math.floor( t/(1000*60*60*24) );
+      return {
+        'total': t,
+        'days': days,
+        'hours': hours,
+        'minutes': minutes,
+        'seconds': seconds
+      };
+    }
+    
+    function initializeClock(id, endtime){
+      var clock = document.getElementById(id);
+      var timeinterval = setInterval(function(){
+        var t = getTimeRemaining(endtime);
+        if(t.total>0){
+          clock.innerHTML = 
+            t.hours + 'h ' +
+            t.minutes + 'm ' +
+            t.seconds + 's ';
+        } else {
+          clock.innerHTML = '0h 0m 0s';
+        }
+      },1000);
+    }
     </script>
   </body>
 </html>

@@ -11,7 +11,6 @@ return array(
   'cp_pass'     => 'missioncontrol-password',
   'cp_guid'     => 'some-guid',
   'session_path'=> '/path/to/sessions',
-  'front_string'     => "At gaming? Want pizza? We've got you covered.",
   'empty_pizza'      => 18,
   'basic_pizza'      => 1
 );
