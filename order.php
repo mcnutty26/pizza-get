@@ -487,9 +487,6 @@ if (isset($_POST['name'])) {
     <script src="dist/js/vendor/video.js"></script>
     <script src="dist/js/flat-ui.min.js"></script>
     <script src="docs/assets/js/application.js"></script>
-    <script>
-      videojs.options.flash.swf = "dist/js/vendors/video-js.swf"
-    </script>
     
   </body>
 </html>
