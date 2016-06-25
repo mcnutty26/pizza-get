@@ -238,9 +238,5 @@ if ($size == "1") {
     }
   }
   </script>
-    
-    <script>
-      videojs.options.flash.swf = "dist/js/vendors/video-js.swf"
-    </script>
   </body>
 </html>
