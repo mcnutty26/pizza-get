@@ -33,13 +33,13 @@ $isLive = database::getLive()
     <![endif]-->
   </head>
   <body>
-	<? if ($isLive == 0 and $active == 1) { ?>
- 	<footer>
- 		<div class="container">
-			<p>TEST MODE</p>
-		</div>
-	</footer>
-	<? } ?>
+    <? if ($isLive == 0 and $active == 1) { ?>
+    <footer>
+      <div class="container">
+        <p>TEST MODE</p>
+      </div>
+    </footer>
+    <? } ?>
     <div class="container">
       <div class="row demo-row">
         <div class="col-xs-12">
@@ -71,15 +71,15 @@ $isLive = database::getLive()
       
     </div> <!-- /container -->
 
-	<? if ($isLive == 0 and $active == 1) { ?>
- 	<footer>
- 		<div class="container">
-			<p>TEST MODE</p>
-		</div>
-	</footer>
-	<? } ?>
+    <? if ($isLive == 0 and $active == 1) { ?>
+    <footer>
+      <div class="container">
+        <p>TEST MODE</p>
+      </div>
+    </footer>
+    <? } ?>
 	
-	<script src="dist/js/vendor/jquery.min.js"></script>
+    <script src="dist/js/vendor/jquery.min.js"></script>
     <script src="dist/js/flat-ui.min.js"></script>
     <script src="docs/assets/js/application.js"></script>
 
