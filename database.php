@@ -94,12 +94,12 @@ class database {
     
     static function clearGuid()
     {
-      return database::simpleQuery("DELETE FROM `mcnutty`.`hir2_sessions` WHERE 1=1;");
+      return database::simpleQuery("DELETE FROM `hir2_sessions` WHERE 1=1;");
     }
     
     static function clearOrders()
     {
-      return database::simpleQuery("DELETE FROM `mcnutty`.`hir2_orders` WHERE 1=1;");
+      return database::simpleQuery("DELETE FROM `hir2_orders` WHERE 1=1;");
     }
     
     static function getPizza($id)
@@ -114,57 +114,57 @@ class database {
     
     static function getGuid($guid)
     {
-      return $result = database::singleArgQuery("SELECT * FROM `mcnutty`.`hir2_sessions` WHERE `guid`=:arg LIMIT 1", $guid)[0];
+      return $result = database::singleArgQuery("SELECT * FROM `hir2_sessions` WHERE `guid`=:arg LIMIT 1", $guid)[0];
     }
     
     static function setDiscount($val)
     {
-      return database::singleArgQuery("UPDATE `mcnutty`.`hir2_events` SET `discount`=:arg;", $val);
+      return database::singleArgQuery("UPDATE `hir2_events` SET `discount`=:arg;", $val);
     }
     
     static function setTime($val)
     {
-      return database::singleArgQuery("UPDATE `mcnutty`.`hir2_events` SET `deadline`=:arg;", $val);
+      return database::singleArgQuery("UPDATE `hir2_events` SET `deadline`=:arg;", $val);
     }
     
     static function setDiscountSides($val)
     {
-      return database::singleArgQuery("UPDATE `mcnutty`.`hir2_events` SET `discountSides`=:arg;", $val);
+      return database::singleArgQuery("UPDATE `hir2_events` SET `discountSides`=:arg;", $val);
     }
     
     static function setActive($val)
     {
-      return database::singleArgQuery("UPDATE `mcnutty`.`hir2_events` SET `active`=:arg;", $val);
+      return database::singleArgQuery("UPDATE `hir2_events` SET `active`=:arg;", $val);
     }
     
     static function setLive($val)
     {
-      return database::singleArgQuery("UPDATE `mcnutty`.`hir2_events` SET `live`=:arg;", $val);
+      return database::singleArgQuery("UPDATE `hir2_events` SET `live`=:arg;", $val);
     }
     
     static function setPaid($id)
     {
-      return database::singleArgQuery("UPDATE `mcnutty`.`hir2_orders` SET `paid`=1 WHERE `id`=:arg;", $id);
+      return database::singleArgQuery("UPDATE `hir2_orders` SET `paid`=1 WHERE `id`=:arg;", $id);
     }
     
     static function setEntered($id)
     {
-      return database::singleArgQuery("UPDATE `mcnutty`.`hir2_orders` SET `entered`=1 WHERE `id`=:arg;", $id);
+      return database::singleArgQuery("UPDATE `hir2_orders` SET `entered`=1 WHERE `id`=:arg;", $id);
     }
     
     static function deleteOrder($id)
     {
-      return database::singleArgQuery("DELETE FROM `mcnutty`.`hir2_orders` WHERE `id`=:arg;", $id);
+      return database::singleArgQuery("DELETE FROM `hir2_orders` WHERE `id`=:arg;", $id);
     }
 
     static function deleteGuid($guid)
     {
-      return database::singleArgQuery("DELETE FROM `mcnutty`.`hir2_sessions` WHERE `guid`=:arg;", $guid);
+      return database::singleArgQuery("DELETE FROM `hir2_sessions` WHERE `guid`=:arg;", $guid);
     }
     
     static function setOrder($name, $order, $price, $paid)
     {
-      $stmt = database::getDbh()->prepare("INSERT INTO `mcnutty`.`hir2_orders` (`id` ,`name` ,`order` ,`price` ,`paid`) VALUES (NULL ,  :name,  :order,  :price,  :paid);");
+      $stmt = database::getDbh()->prepare("INSERT INTO `hir2_orders` (`id` ,`name` ,`order` ,`price` ,`paid`) VALUES (NULL ,  :name,  :order,  :price,  :paid);");
       $stmt->bindParam(':name', $name);
       $stmt->bindParam(':order', $order);
       $stmt->bindParam(':price', $price);
@@ -177,7 +177,7 @@ class database {
     
     static function setLog($name, $order, $price, $paid)
     {
-      $stmt = database::getDbh()->prepare("INSERT INTO `mcnutty`.`hir2_log` (`id` ,`name` ,`order` ,`price` ,`cardTransaction`) VALUES (NULL ,  :name,  :order,  :price,  :cardTransaction);");
+      $stmt = database::getDbh()->prepare("INSERT INTO `hir2_log` (`id` ,`name` ,`order` ,`price` ,`cardTransaction`) VALUES (NULL ,  :name,  :order,  :price,  :cardTransaction);");
       $stmt->bindParam(':name', $name);
       $stmt->bindParam(':order', $order);
       $stmt->bindParam(':price', $price);
@@ -190,7 +190,7 @@ class database {
 
     static function setGuid($guid, $name, $order, $price, $price_stripe)
     {
-      $stmt = database::getDbh()->prepare("INSERT INTO  `mcnutty`.`hir2_sessions` (`id` ,`guid`, `name`, `order` ,`price`, `price_stripe`) VALUES (NULL ,  :guid, :name, :order, :price, :price_stripe);");
+      $stmt = database::getDbh()->prepare("INSERT INTO  `hir2_sessions` (`id` ,`guid`, `name`, `order` ,`price`, `price_stripe`) VALUES (NULL ,  :guid, :name, :order, :price, :price_stripe);");
       $stmt->bindParam(':guid', $guid);
       $stmt->bindParam(':name', $name);
       $stmt->bindParam(':order', $order);
