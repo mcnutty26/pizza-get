@@ -215,7 +215,8 @@ $deadline = database::getDeadline();
 	  }
       var pv = p.options[p.selectedIndex].value;
       var sv = s.options[s.selectedIndex].value;
-      if ((pv == '20' || pv == '21' || pv == '22' || pv == '23' || pv == '24') && (sv == '3' || sv == '4')){
+      var cv = c.options[c.selectedIndex].value;
+      if ((pv == '20' || pv == '21' || pv == '22' || pv == '23' || pv == '24') && (sv == '3' || sv == '4' || cv != 'b')){
         $('#size-error').show();
         return false;
       } else {        
