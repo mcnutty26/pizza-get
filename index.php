@@ -213,7 +213,9 @@ $deadline = database::getDeadline();
         $('#size-error').show();
         return false;
 	  }
-      if (p.options[p.selectedIndex].value == ('20' || '21' || '22' || '23' || '24') && c.options[c.selectedIndex].value == ('3' || '4')){
+	  var pv = p.options[p.selectedIndex].value;
+	  var cv = c.options[c.selectedIndex].value;
+      if ((pv == '20' || pv == '21' || pv == '22' || pv == '23' || pv == '24') && (cv == '3' || cv == '4')){
         $('#size-error').show();
         return false;
       } else {        
