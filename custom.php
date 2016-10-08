@@ -17,13 +17,13 @@ $size = $_POST['size'];
 $base = database::getPizza($config['basic_pizza']);
 if ($size == "1") {
   $price = $base['large'];
-  $topping_price = 130;
+  $topping_price = 140;
 } else if ($size == "2") {
   $price = $base['medium'];
-  $topping_price = 120;
+  $topping_price = 130;
 } else if ($size == "3") {
   $price = $base['small'];
-  $topping_price = 100;
+  $topping_price = 110;
 } else if ($size == "4") {
   $price = $base['personal'];
   $topping_price = 80;

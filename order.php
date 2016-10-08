@@ -66,7 +66,7 @@ if (isset($_POST['name'])) {
   //Set the price based on the pizza size
   if ($size == "1") {
     $size_name = "Large";
-    $topping_price = 130;
+    $topping_price = 140;
     foreach ($menu as $row) {
       if ($row['id'] == $pizza) {
         $price = $row['large'];
@@ -76,7 +76,7 @@ if (isset($_POST['name'])) {
     }
   } else if ($size == "2") {
     $size_name = "Medium";
-    $topping_price = 120;
+    $topping_price = 130;
     foreach ($menu as $row) {
       if ($row['id'] == $pizza) {
         $price = $row['medium'];
@@ -86,7 +86,7 @@ if (isset($_POST['name'])) {
     }
   } else if ($size == "3") {
     $size_name = "Small";
-    $topping_price = 100;
+    $topping_price = 110;
     foreach ($menu as $row) {
       if ($row['id'] == $pizza) {
       $price = $row['small'];
