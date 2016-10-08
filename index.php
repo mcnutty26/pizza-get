@@ -213,7 +213,7 @@ $deadline = database::getDeadline();
         $('#size-error').show();
         return false;
 	  }
-      if (p.options[p.selectedIndex].value == ('20' || '21' || '22' || '23' || '24') && c.options[c.selectedIndex].value == ('3' || '4'){
+      if (p.options[p.selectedIndex].value == ('20' || '21' || '22' || '23' || '24') && c.options[c.selectedIndex].value == ('3' || '4')){
         $('#size-error').show();
         return false;
       } else {        
